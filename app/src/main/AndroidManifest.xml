@@ -16,10 +16,10 @@
             android:name=".features.addStory.presentation.AddStoryActivity"
             android:exported="false" />
         <activity
-            android:name=".features.register.presentation.RegisterActivity"
+            android:name=".features.login.presentation.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".features.login.presentation.LoginActivity"
+            android:name=".features.register.presentation.RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".features.home.presentation.HomeActivity"
