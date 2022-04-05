@@ -4,9 +4,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class AppPreferences(
-    val loginToken: String
+    val loginResult: LoginResult
 ) {
     companion object {
-        val defaultValue = AppPreferences(loginToken = "")
+        val defaultValue = AppPreferences(
+            loginResult = LoginResult.defaultValue
+        )
     }
 }

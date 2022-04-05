@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import com.romnan.dicodingstory.core.layers.data.util.AppPreferencesSerializer
 import com.romnan.dicodingstory.core.layers.domain.model.AppPreferences
+import com.romnan.dicodingstory.core.layers.domain.model.LoginResult
 import com.romnan.dicodingstory.core.layers.domain.repository.PreferencesRepository
 import kotlinx.coroutines.flow.Flow
 
@@ -22,9 +23,9 @@ class PreferencesRepositoryImpl(
         return dataStore.data
     }
 
-    override suspend fun setLoginToken(newToken: String) {
+    override suspend fun saveLoginResult(loginResult: LoginResult) {
         dataStore.updateData {
-            it.copy(loginToken = newToken)
+            it.copy(loginResult = loginResult)
         }
     }
 
