@@ -12,4 +12,6 @@
     <string name="em_401">Wrong email or password!</string>
     <string name="em_400">Please enter another email</string>
     <string name="registering">Registering…</string>
+    <string name="background_image">Background image</string>
+    <string name="story_photo">Story photo</string>
 </resources>
