@@ -55,8 +55,6 @@ class RegisterRepositoryImpl(
 
                 else -> emit(Resource.Error(UIText.StringResource(R.string.em_unknown)))
             }
-            e.printStackTrace()
-            Log.d("RepoImpl", "register: ${e.message}")
         }
     }
 }
