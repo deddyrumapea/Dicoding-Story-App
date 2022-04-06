@@ -22,7 +22,7 @@ class LoginRepositoryImpl(
         password: String
     ): Flow<Resource<LoginResult>> = flow {
 
-        emit(Resource.Loading(null))
+        emit(Resource.Loading())
 
         try {
             val response = loginApi.login(email = email, password = password)
