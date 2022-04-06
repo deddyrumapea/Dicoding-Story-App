@@ -10,4 +10,6 @@
     <string name="em_unknown">Unknown error</string>
     <string name="logging_in">Logging in…</string>
     <string name="em_401">Wrong email or password!</string>
+    <string name="em_400">Please enter another email</string>
+    <string name="registering">Registering…</string>
 </resources>
