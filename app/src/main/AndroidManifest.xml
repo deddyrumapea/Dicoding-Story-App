@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DicodingStory">
         <activity
+            android:name=".features.storyDetail.StoryDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".features.addStory.presentation.AddStoryActivity"
             android:exported="false" />
         <activity

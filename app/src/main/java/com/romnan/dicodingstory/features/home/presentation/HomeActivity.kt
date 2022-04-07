@@ -10,9 +10,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.romnan.dicodingstory.R
+import com.romnan.dicodingstory.core.layers.presentation.model.StoryParcelable
 import com.romnan.dicodingstory.core.util.UIText
 import com.romnan.dicodingstory.features.home.presentation.adapter.StoryAdapter
 import com.romnan.dicodingstory.features.login.presentation.LoginActivity
+import com.romnan.dicodingstory.features.storyDetail.StoryDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,6 +42,13 @@ class HomeActivity : AppCompatActivity() {
         rvStoriesList.apply {
             layoutManager = LinearLayoutManager(this@HomeActivity)
             adapter = storyAdapter
+        }
+
+        storyAdapter.onItemClick = { story ->
+            Intent(this, StoryDetailActivity::class.java).apply {
+                putExtra(StoryDetailActivity.EXTRA_STORY_PARCELABLE, StoryParcelable(story))
+                startActivity(this)
+            }
         }
 
         viewModel.storiesList.observe(this) { storiesList ->
