@@ -22,6 +22,7 @@ class HomeViewModel @Inject constructor(
     private val homeRepo: HomeRepository,
     private val prefRepo: PreferencesRepository
 ) : ViewModel() {
+    // TODO: remove all mutablelivedata initial values
     private val _storiesList = MutableLiveData(emptyList<Story>())
     val storiesList: LiveData<List<Story>> = _storiesList
 
@@ -34,12 +35,6 @@ class HomeViewModel @Inject constructor(
 
     private val _isLoggedIn = MutableLiveData(true)
     val isLoggedIn: LiveData<Boolean> = _isLoggedIn
-
-    private val _userName = MutableLiveData("")
-    val userName: LiveData<String> = _userName
-
-    private val _userId = MutableLiveData("")
-    val userId: LiveData<String> = _userId
 
     private var getAllStoriesJob: Job? = null
     private var initLoginStateJob: Job? = null
@@ -78,8 +73,6 @@ class HomeViewModel @Inject constructor(
             prefRepo.getAppPreferences().onEach { appPref ->
                 val loginState = appPref.loginResult
                 _isLoggedIn.value = loginState.token.isNotBlank()
-                _userId.value = loginState.userId
-                _userName.value = loginState.name
             }.launchIn(this)
         }
     }
