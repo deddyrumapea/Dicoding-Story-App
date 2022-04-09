@@ -23,14 +23,13 @@ class LoginViewModel @Inject constructor(
     private val prefRepo: PreferencesRepository
 ) : ViewModel() {
 
-    private val _isLoading = MutableLiveData(false)
+    private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _isLoggedIn = MutableLiveData(false)
+    private val _isLoggedIn = MutableLiveData<Boolean>()
     val isLoggedIn: LiveData<Boolean> = _isLoggedIn
 
-    private val _errorMessage: MutableLiveData<UIText> =
-        MutableLiveData(UIText.DynamicString(""))
+    private val _errorMessage = MutableLiveData<UIText>()
     val errorMessage: LiveData<UIText> = _errorMessage
 
     private var checkLoginStateJob: Job? = null
