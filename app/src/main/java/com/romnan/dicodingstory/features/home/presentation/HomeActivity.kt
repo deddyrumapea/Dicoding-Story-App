@@ -82,6 +82,11 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.onEvent(HomeEvent.RefreshStories)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.mi_logout) viewModel.onEvent(HomeEvent.Logout)
         return true

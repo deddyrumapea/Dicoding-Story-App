@@ -47,6 +47,7 @@ class HomeViewModel @Inject constructor(
     fun onEvent(event: HomeEvent) {
         when (event) {
             HomeEvent.Logout -> logout()
+            HomeEvent.RefreshStories -> getAllStories()
         }
     }
 
