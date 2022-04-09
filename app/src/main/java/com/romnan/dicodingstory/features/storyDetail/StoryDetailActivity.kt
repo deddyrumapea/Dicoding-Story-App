@@ -1,6 +1,7 @@
 package com.romnan.dicodingstory.features.storyDetail
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,7 @@ class StoryDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.title = getString(R.string.story_detail)
         setContentView(R.layout.activity_story_detail)
 
         val story = intent.getParcelableExtra<StoryParcelable>(EXTRA_STORY_PARCELABLE)
@@ -27,6 +29,11 @@ class StoryDetailActivity : AppCompatActivity() {
                 .load(it)
                 .into(ivPhoto)
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) finish()
+        return true
     }
 
     companion object {
