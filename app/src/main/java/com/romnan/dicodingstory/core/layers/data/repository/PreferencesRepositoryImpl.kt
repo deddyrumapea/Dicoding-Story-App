@@ -29,6 +29,12 @@ class PreferencesRepositoryImpl(
         }
     }
 
+    override suspend fun deleteLoginResult() {
+        dataStore.updateData {
+            it.copy(loginResult = LoginResult.defaultValue)
+        }
+    }
+
     companion object {
         private const val APP_PREF_FILE_NAME = "app-preferences.json"
     }

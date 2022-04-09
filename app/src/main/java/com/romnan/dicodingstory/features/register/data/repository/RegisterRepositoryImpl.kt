@@ -1,6 +1,5 @@
 package com.romnan.dicodingstory.features.register.data.repository
 
-import android.util.Log
 import com.romnan.dicodingstory.R
 import com.romnan.dicodingstory.core.util.Resource
 import com.romnan.dicodingstory.core.util.SimpleResource

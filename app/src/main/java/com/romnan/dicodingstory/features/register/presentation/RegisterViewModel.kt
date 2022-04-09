@@ -19,14 +19,13 @@ import javax.inject.Inject
 class RegisterViewModel @Inject constructor(
     private val registerRepo: RegisterRepository
 ) : ViewModel() {
-    private val _isLoading = MutableLiveData(false)
+    private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _isRegistered = MutableLiveData(false)
+    private val _isRegistered = MutableLiveData<Boolean>()
     val isRegistered: LiveData<Boolean> = _isRegistered
 
-    private val _errorMessage: MutableLiveData<UIText> =
-        MutableLiveData(UIText.DynamicString(""))
+    private val _errorMessage = MutableLiveData<UIText>()
     val errorMessage: LiveData<UIText> = _errorMessage
 
     private var registerJob: Job? = null

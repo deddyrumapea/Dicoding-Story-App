@@ -10,6 +10,7 @@ import com.romnan.dicodingstory.core.util.Resource
 import com.romnan.dicodingstory.core.util.UIText
 import com.romnan.dicodingstory.features.home.domain.model.Story
 import com.romnan.dicodingstory.features.home.domain.repository.HomeRepository
+import com.romnan.dicodingstory.features.home.presentation.model.HomeEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
@@ -22,26 +23,32 @@ class HomeViewModel @Inject constructor(
     private val homeRepo: HomeRepository,
     private val prefRepo: PreferencesRepository
 ) : ViewModel() {
-    // TODO: remove all mutablelivedata initial values
-    private val _storiesList = MutableLiveData(emptyList<Story>())
+    private val _storiesList = MutableLiveData<List<Story>>()
     val storiesList: LiveData<List<Story>> = _storiesList
 
-    private val _errorMessage: MutableLiveData<UIText> =
-        MutableLiveData(UIText.DynamicString(""))
+    private val _errorMessage = MutableLiveData<UIText>()
     val errorMessage: LiveData<UIText> = _errorMessage
 
-    private val _isLoading = MutableLiveData(false)
+    private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _isLoggedIn = MutableLiveData(true)
+    private val _isLoggedIn = MutableLiveData<Boolean>()
     val isLoggedIn: LiveData<Boolean> = _isLoggedIn
 
     private var getAllStoriesJob: Job? = null
-    private var initLoginStateJob: Job? = null
+    private var collectLoginStateJob: Job? = null
+    private var logoutJob: Job? = null
 
     init {
-        updateLoginState()
+        collectLoginState()
         getAllStories()
+    }
+
+    fun onEvent(event: HomeEvent) {
+        when (event) {
+            HomeEvent.Logout -> logout()
+            HomeEvent.RefreshStories -> getAllStories()
+        }
     }
 
     private fun getAllStories() {
@@ -67,9 +74,14 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun updateLoginState() {
-        initLoginStateJob?.cancel()
-        initLoginStateJob = viewModelScope.launch {
+    private fun logout() {
+        logoutJob?.cancel()
+        logoutJob = viewModelScope.launch { prefRepo.deleteLoginResult() }
+    }
+
+    private fun collectLoginState() {
+        collectLoginStateJob?.cancel()
+        collectLoginStateJob = viewModelScope.launch {
             prefRepo.getAppPreferences().onEach { appPref ->
                 val loginState = appPref.loginResult
                 _isLoggedIn.value = loginState.token.isNotBlank()

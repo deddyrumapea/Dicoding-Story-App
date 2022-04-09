@@ -1,5 +1,6 @@
 package com.romnan.dicodingstory.features.addStory.di
 
+import android.content.Context
 import com.romnan.dicodingstory.core.layers.domain.repository.PreferencesRepository
 import com.romnan.dicodingstory.features.addStory.data.remote.AddStoryApi
 import com.romnan.dicodingstory.features.addStory.data.repository.AddStoryRepositoryImpl
@@ -7,6 +8,7 @@ import com.romnan.dicodingstory.features.addStory.domain.repository.AddStoryRepo
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import javax.inject.Singleton
@@ -19,11 +21,13 @@ class AddStoryModule {
     @Singleton
     fun provideAddStoryRepository(
         addStoryApi: AddStoryApi,
-        prefRepo: PreferencesRepository
+        prefRepo: PreferencesRepository,
+        @ApplicationContext context: Context
     ): AddStoryRepository {
         return AddStoryRepositoryImpl(
             api = addStoryApi,
-            prefRepo = prefRepo
+            prefRepo = prefRepo,
+            appContext = context
         )
     }
 

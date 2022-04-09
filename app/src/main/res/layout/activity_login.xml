@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:padding="@dimen/padding_16dp"
     tools:context=".features.login.presentation.LoginActivity">
 
@@ -32,11 +34,42 @@
         android:text="@string/login"
         app:layout_constraintTop_toBottomOf="@id/et_login_password" />
 
+    <View
+        android:id="@+id/v_divider_left"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:background="@color/blue_gray_200"
+        app:layout_constraintBottom_toBottomOf="@id/tv_register_title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/tv_register_title"
+        app:layout_constraintTop_toTopOf="@id/tv_register_title" />
+
+    <TextView
+        android:id="@+id/tv_register_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_16dp"
+        android:text="@string/register_title"
+        app:layout_constraintLeft_toRightOf="@id/v_divider_left"
+        app:layout_constraintRight_toLeftOf="@id/v_divider_right"
+        app:layout_constraintTop_toBottomOf="@id/btn_login" />
+
+    <View
+        android:id="@+id/v_divider_right"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:background="@color/blue_gray_200"
+        app:layout_constraintBottom_toBottomOf="@id/tv_register_title"
+        app:layout_constraintLeft_toRightOf="@id/tv_register_title"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_register_title" />
+
     <Button
         android:id="@+id/btn_go_to_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8dp"
         android:text="@string/register"
-        app:layout_constraintTop_toBottomOf="@id/btn_login" />
+        app:layout_constraintTop_toBottomOf="@id/tv_register_title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

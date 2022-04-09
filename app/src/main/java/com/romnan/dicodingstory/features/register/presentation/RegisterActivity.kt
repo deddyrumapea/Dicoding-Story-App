@@ -2,6 +2,7 @@ package com.romnan.dicodingstory.features.register.presentation
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -25,7 +26,6 @@ class RegisterActivity : AppCompatActivity() {
         val etEmail = findViewById<EditText>(R.id.et_register_email)
         val etPassword = findViewById<EditText>(R.id.et_register_password)
         val btnRegister = findViewById<Button>(R.id.btn_register)
-        val btnLogin = findViewById<Button>(R.id.btn_go_to_login)
 
         viewModel.isLoading.observe(this) { isLoading ->
             etName.isEnabled = !isLoading
@@ -66,12 +66,10 @@ class RegisterActivity : AppCompatActivity() {
                 )
             )
         }
+    }
 
-        btnLogin.setOnClickListener {
-            Intent(this@RegisterActivity, LoginActivity::class.java).run {
-                startActivity(this)
-                finish()
-            }
-        }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) finish()
+        return true
     }
 }
