@@ -99,11 +99,9 @@ class AddStoryActivity : AppCompatActivity() {
     }
 
     private fun uploadImage() {
-        val compressedJpg = selectedJpg?.let { compressJpeg(it) } ?: return
-
         val newStory = NewStory(
             description = etDescription?.text.toString(),
-            photo = compressedJpg
+            photo = selectedJpg ?: return
         )
 
         viewModel.onEvent(AddStoryEvent.UploadImage(newStory))
