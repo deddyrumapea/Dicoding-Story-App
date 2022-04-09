@@ -7,6 +7,8 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import com.romnan.dicodingstory.R
 import com.romnan.dicodingstory.core.util.UIText
 import com.romnan.dicodingstory.features.home.presentation.HomeActivity
@@ -68,10 +70,17 @@ class LoginActivity : AppCompatActivity() {
         }
 
         btnRegister.setOnClickListener {
-            Intent(this@LoginActivity, RegisterActivity::class.java).run {
-                startActivity(this)
-                finish()
-            }
+            val animationBundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this@LoginActivity,
+                Pair(etEmail, getString(R.string.tn_et_register_email)),
+                Pair(etPassword, getString(R.string.tn_et_register_password)),
+                Pair(btnLogin, getString(R.string.tn_btn_register))
+            ).toBundle()
+
+            startActivity(
+                Intent(this@LoginActivity, RegisterActivity::class.java),
+                animationBundle
+            )
         }
     }
 

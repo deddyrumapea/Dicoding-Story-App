@@ -26,4 +26,8 @@
     <string name="choose_a_picture">Choose a Picture</string>
     <string name="unable_to_acquire_permission">Unable to acquire permission</string>
     <string name="logout">Logout</string>
+    <string name="tn_et_register_email">et_register_email</string>
+    <string name="tn_et_register_password">et_register_password</string>
+    <string name="tn_btn_register">btn_register</string>
+    <string name="register_title">Haven\'t got an account yet?</string>
 </resources>

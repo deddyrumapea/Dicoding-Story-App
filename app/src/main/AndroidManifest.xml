@@ -28,20 +28,22 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/paths_files" />
         </provider>
+
         <activity
             android:name=".features.storyDetail.StoryDetailActivity"
-            android:parentActivityName=".features.home.presentation.HomeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".features.home.presentation.HomeActivity" />
         <activity
             android:name=".features.addStory.presentation.AddStoryActivity"
-            android:parentActivityName=".features.home.presentation.HomeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".features.home.presentation.HomeActivity" />
         <activity
             android:name=".features.login.presentation.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".features.register.presentation.RegisterActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".features.login.presentation.LoginActivity" />
         <activity
             android:name=".features.home.presentation.HomeActivity"
             android:exported="true">
