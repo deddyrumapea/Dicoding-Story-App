@@ -1,6 +1,5 @@
 package com.romnan.dicodingstory.features.home.data.repository
 
-import android.util.Log
 import com.romnan.dicodingstory.R
 import com.romnan.dicodingstory.core.layers.domain.repository.PreferencesRepository
 import com.romnan.dicodingstory.core.util.Resource
@@ -23,7 +22,6 @@ class HomeRepositoryImpl(
         try {
             val loginResult = prefRepo.getAppPreferences().first().loginResult
             val bearerToken = "Bearer ${loginResult.token}"
-            Log.d("ImplTAG", "getAllStories: $bearerToken")
             val response = api.getAllStories(bearerToken = bearerToken)
             emit(Resource.Success(response.listStory))
         } catch (e: Exception) {
