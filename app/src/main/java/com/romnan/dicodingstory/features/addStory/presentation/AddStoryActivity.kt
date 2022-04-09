@@ -21,6 +21,7 @@ import androidx.lifecycle.lifecycleScope
 import com.romnan.dicodingstory.R
 import com.romnan.dicodingstory.core.util.UIText
 import com.romnan.dicodingstory.features.addStory.presentation.model.AddStoryEvent
+import com.romnan.dicodingstory.features.home.presentation.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -67,6 +68,11 @@ class AddStoryActivity : AppCompatActivity() {
         viewModel.isUploaded.observe(this) { isUploaded ->
             if (isUploaded) {
                 Toast.makeText(this, getString(R.string.upload_success), Toast.LENGTH_LONG).show()
+                startActivity(
+                    Intent(this, HomeActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    }
+                )
                 finish()
             }
         }
@@ -109,10 +115,6 @@ class AddStoryActivity : AppCompatActivity() {
                 putExtra(MediaStore.EXTRA_OUTPUT, viewModel.tempJpegUri)
             }
         )
-
-        lifecycleScope.launch {
-
-        }
     }
 
     private val launcherIntentCamera = registerForActivityResult(
