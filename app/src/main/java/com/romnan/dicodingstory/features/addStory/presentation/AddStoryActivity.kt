@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.content.Intent.ACTION_GET_CONTENT
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -17,24 +16,19 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
+import androidx.core.net.toUri
+import androidx.lifecycle.lifecycleScope
 import com.romnan.dicodingstory.R
 import com.romnan.dicodingstory.core.util.UIText
-import com.romnan.dicodingstory.features.addStory.domain.model.NewStory
 import com.romnan.dicodingstory.features.addStory.presentation.model.AddStoryEvent
-import com.romnan.dicodingstory.features.home.presentation.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.File
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AddStoryActivity : AppCompatActivity() {
 
     private val viewModel: AddStoryViewModel by viewModels()
 
-    private lateinit var currentJpgPath: String
-    private var selectedJpg: File? = null
-
-    private var ivPreview: ImageView? = null
     private var etDescription: EditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,19 +38,20 @@ class AddStoryActivity : AppCompatActivity() {
 
         if (!allPermissionsGranted()) {
             ActivityCompat.requestPermissions(
-                this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
+                this, REQUIRED_PERMISSIONS, PERMISSION_REQUEST_CODE
             )
         }
 
-        ivPreview = findViewById(R.id.iv_preview_image)
-
         etDescription = findViewById(R.id.et_description)
+        val ivPreview = findViewById<ImageView>(R.id.iv_preview_image)
         val btnCamera = findViewById<Button>(R.id.btn_camera)
         val btnGallery = findViewById<Button>(R.id.btn_gallery)
         val pbUploading = findViewById<ProgressBar>(R.id.pb_uploading)
 
         btnCamera.setOnClickListener { launchCamera() }
         btnGallery.setOnClickListener { launchGallery() }
+
+        viewModel.photoFile.observe(this) { ivPreview.setImageURI(it.toUri()) }
 
         viewModel.errorMessage.observe(this) { uiText ->
             val message = when (uiText) {
@@ -72,7 +67,6 @@ class AddStoryActivity : AppCompatActivity() {
         viewModel.isUploaded.observe(this) { isUploaded ->
             if (isUploaded) {
                 Toast.makeText(this, getString(R.string.upload_success), Toast.LENGTH_LONG).show()
-                startActivity(Intent(this@AddStoryActivity, HomeActivity::class.java))
                 finish()
             }
         }
@@ -85,32 +79,14 @@ class AddStoryActivity : AppCompatActivity() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.im_upload -> uploadImage()
-            android.R.id.home -> finish()
-        }
-        return true
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_add_story, menu)
-        return true
-    }
-
-    private fun uploadImage() {
-        val newStory = NewStory(
-            description = etDescription?.text.toString(),
-            photo = selectedJpg ?: return
-        )
-
-        viewModel.onEvent(AddStoryEvent.UploadImage(newStory))
+    private fun uploadStory() {
+        viewModel.onEvent(AddStoryEvent.UploadImage(etDescription?.text.toString()))
     }
 
     private fun launchGallery() {
         val intent = Intent().apply {
             action = ACTION_GET_CONTENT
-            type = "image/*"
+            type = getString(R.string.image_all_types)
         }
         val chooser = Intent.createChooser(intent, getString(R.string.choose_a_picture))
         launcherIntentGallery.launch(chooser)
@@ -120,26 +96,22 @@ class AddStoryActivity : AppCompatActivity() {
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == RESULT_OK) {
-            val selectedJpgUri: Uri = result.data?.data as Uri
-            selectedJpg = findFileByUri(selectedJpgUri, this@AddStoryActivity)
-            ivPreview?.setImageURI(selectedJpgUri)
+            val selectedJpegUri: Uri = result.data?.data ?: return@registerForActivityResult
+            viewModel.onEvent(AddStoryEvent.ImageSelected(selectedJpegUri))
         }
     }
 
     private fun launchCamera() {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
-            resolveActivity(packageManager)
-        }
+        viewModel.onEvent(AddStoryEvent.OpenCamera)
+        launcherIntentCamera.launch(
+            Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+                resolveActivity(packageManager)
+                putExtra(MediaStore.EXTRA_OUTPUT, viewModel.tempJpegUri)
+            }
+        )
 
-        createTempJpg(application).also { tempJpg ->
-            val tempJpgUri: Uri = FileProvider.getUriForFile(
-                this@AddStoryActivity,
-                "com.romnan.dicodingstory",
-                tempJpg
-            )
-            currentJpgPath = tempJpg.absolutePath
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, tempJpgUri)
-            launcherIntentCamera.launch(intent)
+        lifecycleScope.launch {
+
         }
     }
 
@@ -147,10 +119,7 @@ class AddStoryActivity : AppCompatActivity() {
         ActivityResultContracts.StartActivityForResult()
     ) {
         if (it.resultCode == RESULT_OK) {
-            selectedJpg = File(currentJpgPath)
-
-            val result = BitmapFactory.decodeFile(selectedJpg?.path)
-            ivPreview?.setImageBitmap(result)
+            viewModel.onEvent(AddStoryEvent.ImageCaptured)
         }
     }
 
@@ -165,7 +134,7 @@ class AddStoryActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
             if (!allPermissionsGranted()) {
                 Toast.makeText(
                     this,
@@ -177,8 +146,21 @@ class AddStoryActivity : AppCompatActivity() {
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.im_upload -> uploadStory()
+            android.R.id.home -> finish()
+        }
+        return true
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_add_story, menu)
+        return true
+    }
+
     companion object {
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
-        private const val REQUEST_CODE_PERMISSIONS = 10
+        private const val PERMISSION_REQUEST_CODE = 10
     }
 }
