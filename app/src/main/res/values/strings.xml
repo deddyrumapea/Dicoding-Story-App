@@ -25,4 +25,5 @@
     <string name="upload_success">Your story is successfully uploaded!</string>
     <string name="choose_a_picture">Choose a Picture</string>
     <string name="unable_to_acquire_permission">Unable to acquire permission</string>
+    <string name="logout">Logout</string>
 </resources>

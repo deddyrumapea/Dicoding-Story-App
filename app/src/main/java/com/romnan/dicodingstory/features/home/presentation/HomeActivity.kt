@@ -2,6 +2,8 @@ package com.romnan.dicodingstory.features.home.presentation
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -15,6 +17,7 @@ import com.romnan.dicodingstory.core.layers.presentation.model.StoryParcelable
 import com.romnan.dicodingstory.core.util.UIText
 import com.romnan.dicodingstory.features.addStory.presentation.AddStoryActivity
 import com.romnan.dicodingstory.features.home.presentation.adapter.StoryAdapter
+import com.romnan.dicodingstory.features.home.presentation.model.HomeEvent
 import com.romnan.dicodingstory.features.login.presentation.LoginActivity
 import com.romnan.dicodingstory.features.storyDetail.StoryDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -77,5 +80,15 @@ class HomeActivity : AppCompatActivity() {
                 Toast.makeText(this, message, Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.mi_logout) viewModel.onEvent(HomeEvent.Logout)
+        return true
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_home, menu)
+        return true
     }
 }
