@@ -2,7 +2,6 @@ package com.romnan.dicodingstory.core.layers.domain.repository
 
 import com.romnan.dicodingstory.core.layers.domain.model.AppPreferences
 import com.romnan.dicodingstory.core.layers.domain.model.LoginResult
-import com.romnan.dicodingstory.core.util.SimpleResource
 import kotlinx.coroutines.flow.Flow
 
 interface PreferencesRepository {

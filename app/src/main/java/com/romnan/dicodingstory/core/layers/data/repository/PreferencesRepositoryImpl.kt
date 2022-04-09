@@ -7,7 +7,6 @@ import com.romnan.dicodingstory.core.layers.data.util.AppPreferencesSerializer
 import com.romnan.dicodingstory.core.layers.domain.model.AppPreferences
 import com.romnan.dicodingstory.core.layers.domain.model.LoginResult
 import com.romnan.dicodingstory.core.layers.domain.repository.PreferencesRepository
-import com.romnan.dicodingstory.core.util.SimpleResource
 import kotlinx.coroutines.flow.Flow
 
 class PreferencesRepositoryImpl(
