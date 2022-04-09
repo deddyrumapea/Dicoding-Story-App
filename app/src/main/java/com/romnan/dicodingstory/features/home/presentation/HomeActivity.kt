@@ -9,9 +9,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.romnan.dicodingstory.R
 import com.romnan.dicodingstory.core.layers.presentation.model.StoryParcelable
 import com.romnan.dicodingstory.core.util.UIText
+import com.romnan.dicodingstory.features.addStory.presentation.AddStoryActivity
 import com.romnan.dicodingstory.features.home.presentation.adapter.StoryAdapter
 import com.romnan.dicodingstory.features.login.presentation.LoginActivity
 import com.romnan.dicodingstory.features.storyDetail.StoryDetailActivity
@@ -37,6 +39,7 @@ class HomeActivity : AppCompatActivity() {
 
         val rvStoriesList = findViewById<RecyclerView>(R.id.rv_stories_list)
         val pbStoriesList = findViewById<ProgressBar>(R.id.pb_stories_list)
+        val fabAddStory = findViewById<FloatingActionButton>(R.id.fab_add_story)
 
         val storyAdapter = StoryAdapter()
         rvStoriesList.apply {
@@ -49,6 +52,10 @@ class HomeActivity : AppCompatActivity() {
                 putExtra(StoryDetailActivity.EXTRA_STORY_PARCELABLE, StoryParcelable(story))
                 startActivity(this)
             }
+        }
+
+        fabAddStory.setOnClickListener {
+            startActivity(Intent(this, AddStoryActivity::class.java))
         }
 
         viewModel.storiesList.observe(this) { storiesList ->

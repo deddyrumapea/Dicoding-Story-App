@@ -14,4 +14,15 @@
     <string name="registering">Registering…</string>
     <string name="background_image">Background image</string>
     <string name="story_photo">Story photo</string>
+    <string name="add_story">Add story</string>
+    <string name="camera">Camera</string>
+    <string name="preview_image">Preview image</string>
+    <string name="gallery">Gallery</string>
+    <string name="upload">Upload</string>
+    <string name="description">Description</string>
+    <string name="story_detail">Story Detail</string>
+    <string name="em_being_uploaded">Your story is already being uploaded</string>
+    <string name="upload_success">Your story is successfully uploaded!</string>
+    <string name="choose_a_picture">Choose a Picture</string>
+    <string name="unable_to_acquire_permission">Unable to acquire permission</string>
 </resources>
