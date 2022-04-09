@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dicoding Story</string>
+    <string name="login">Masuk</string>
+    <string name="email">Surel</string>
+    <string name="password">Kata Sandi</string>
+    <string name="register">Daftar</string>
+    <string name="name">Nama</string>
+    <string name="em_io_exception">Tidak dapat terhubung dengan server. Mohon periksa koneksi internet Anda.</string>
+    <string name="em_io_exception">T</string>
+    <string name="em_http_exception">Wah, terjadi error!</string>
+    <string name="em_unknown">Terjadi error</string>
+    <string name="logging_in">Sedang masuk…</string>
+    <string name="em_401">Surel atau kata sandi salah!</string>
+    <string name="em_401">S</string>
+    <string name="em_400">Mohon masukkan surel lain</string>
+    <string name="registering">Mendaftarkan…</string>
+    <string name="registering">M</string>
+    <string name="background_image">Gambar latar belakang</string>
+    <string name="story_photo">Foto cerita</string>
+    <string name="add_story">Buat Cerita</string>
+    <string name="camera">Kamera</string>
+    <string name="camera">K</string>
+    <string name="preview_image">Gambar pratinjau</string>
+    <string name="gallery">Galeri</string>
+    <string name="upload">Unggah</string>
+    <string name="description">Deskripsi</string>
+    <string name="story_detail">Detail Cerita</string>
+    <string name="em_being_uploaded">Cerita Anda sudah sedang diunggah</string>
+    <string name="upload_success">Cerita Anda berhasil diunggah!</string>
+    <string name="choose_a_picture">Pilih Sebuah Gambar</string>
+    <string name="unable_to_acquire_permission">Tidak dapat mendapatkan izin</string>
+    <string name="logout">Keluar</string>
+    <string name="register_title">Belum punya akun?</string>
+</resources>
