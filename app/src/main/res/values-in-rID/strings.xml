@@ -28,4 +28,6 @@
     <string name="unable_to_acquire_permission">Tidak dapat mendapatkan izin</string>
     <string name="logout">Keluar</string>
     <string name="register_title">Belum punya akun?</string>
+    <string name="em_password_min_length">Kata sandi harus lebih panjang dari 6 karakter</string>
+    <string name="em_invalid_email">Surel tidak valid</string>
 </resources>
