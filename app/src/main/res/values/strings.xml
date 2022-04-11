@@ -33,4 +33,8 @@
     <string name="image_all_types" translatable="false">image/*</string>
     <string name="em_password_min_length">Password must be longer than 6 characters</string>
     <string name="em_invalid_email">Invalid email</string>
+    <string name="preferences">Preferences</string>
+    <string name="open_phone_language_settings">Open phone language settings</string>
+    <string name="language_settings_description">This app supports English and Bahasa Indonesia. Open phone language settings to change the language.</string>
+    <string name="language">Language</string>
 </resources>
