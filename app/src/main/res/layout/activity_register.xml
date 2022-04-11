@@ -18,8 +18,8 @@
         android:inputType="textPersonName"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/et_register_email"
+    <com.romnan.dicodingstory.core.layers.presentation.customView.EmailEditText
+        android:id="@+id/eet_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:autofillHints="emailAddress"
@@ -28,15 +28,15 @@
         android:transitionName="@string/tn_et_register_email"
         app:layout_constraintTop_toBottomOf="@id/et_register_name" />
 
-    <EditText
-        android:id="@+id/et_register_password"
+    <com.romnan.dicodingstory.core.layers.presentation.customView.PasswordEditText
+        android:id="@+id/pet_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:autofillHints="password"
         android:hint="@string/password"
         android:inputType="textPassword"
         android:transitionName="@string/tn_et_register_password"
-        app:layout_constraintTop_toBottomOf="@id/et_register_email" />
+        app:layout_constraintTop_toBottomOf="@id/eet_register" />
 
     <Button
         android:id="@+id/btn_register"
@@ -44,5 +44,5 @@
         android:layout_height="wrap_content"
         android:text="@string/register"
         android:transitionName="@string/tn_btn_register"
-        app:layout_constraintTop_toBottomOf="@id/et_register_password" />
+        app:layout_constraintTop_toBottomOf="@id/pet_register" />
 </androidx.constraintlayout.widget.ConstraintLayout>

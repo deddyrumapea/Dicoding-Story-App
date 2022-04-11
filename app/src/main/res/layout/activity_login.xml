@@ -9,8 +9,8 @@
     android:padding="@dimen/padding_16dp"
     tools:context=".features.login.presentation.LoginActivity">
 
-    <EditText
-        android:id="@+id/et_login_email"
+    <com.romnan.dicodingstory.core.layers.presentation.customView.EmailEditText
+        android:id="@+id/eet_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:autofillHints="emailAddress"
@@ -18,21 +18,21 @@
         android:inputType="textEmailAddress"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/et_login_password"
+    <com.romnan.dicodingstory.core.layers.presentation.customView.PasswordEditText
+        android:id="@+id/pet_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:autofillHints="password"
         android:hint="@string/password"
         android:inputType="textPassword"
-        app:layout_constraintTop_toBottomOf="@id/et_login_email" />
+        app:layout_constraintTop_toBottomOf="@id/eet_login" />
 
     <Button
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/login"
-        app:layout_constraintTop_toBottomOf="@id/et_login_password" />
+        app:layout_constraintTop_toBottomOf="@id/pet_login" />
 
     <View
         android:id="@+id/v_divider_left"

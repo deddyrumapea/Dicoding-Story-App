@@ -31,4 +31,6 @@
     <string name="tn_btn_register" translatable="false">btn_register</string>
     <string name="register_title">Haven\'t got an account yet?</string>
     <string name="image_all_types" translatable="false">image/*</string>
+    <string name="em_password_min_length">Password must be longer than 6 characters</string>
+    <string name="em_invalid_email">Invalid email</string>
 </resources>
