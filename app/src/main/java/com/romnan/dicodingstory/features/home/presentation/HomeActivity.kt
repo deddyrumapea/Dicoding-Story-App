@@ -19,6 +19,7 @@ import com.romnan.dicodingstory.features.addStory.presentation.AddStoryActivity
 import com.romnan.dicodingstory.features.home.presentation.adapter.StoryAdapter
 import com.romnan.dicodingstory.features.home.presentation.model.HomeEvent
 import com.romnan.dicodingstory.features.login.presentation.LoginActivity
+import com.romnan.dicodingstory.features.preferences.PreferencesActivity
 import com.romnan.dicodingstory.features.storyDetail.StoryDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -83,7 +84,10 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.mi_logout) viewModel.onEvent(HomeEvent.Logout)
+        when (item.itemId) {
+            R.id.mi_logout -> viewModel.onEvent(HomeEvent.Logout)
+            R.id.mi_preferences -> startActivity(Intent(this, PreferencesActivity::class.java))
+        }
         return true
     }
 

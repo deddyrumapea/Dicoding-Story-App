@@ -30,4 +30,8 @@
     <string name="register_title">Belum punya akun?</string>
     <string name="em_password_min_length">Kata sandi harus lebih panjang dari 6 karakter</string>
     <string name="em_invalid_email">Surel tidak valid</string>
+    <string name="preferences">Pengaturan</string>
+    <string name="open_phone_language_settings">Buka pengaturan bahasa telepon</string>
+    <string name="language_settings_description">Aplikasi ini mendukung bahasa Inggris dan Indonesia. Buka pengaturan bahasa telepon untuk mengubah bahasa.</string>
+    <string name="language">Bahasa</string>
 </resources>
