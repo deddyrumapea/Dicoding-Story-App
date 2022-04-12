@@ -40,4 +40,10 @@
     <string name="app_widget_description">Widget that shows stories stack from users</string>
     <string name="stories_stack">Stories Stack</string>
     <string name="em_no_data">No data</string>
+    <string name="em_name_blank">Name can not be empty</string>
+    <string name="em_email_blank">Email can not be empty</string>
+    <string name="em_password_blank">Password can not be blank</string>
+    <string name="em_description_blank">Description can not be empty</string>
+    <string name="em_photo_null">Story photo can not be empty</string>
+    <string name="em_stories_empty">There\'s no stories available</string>
 </resources>

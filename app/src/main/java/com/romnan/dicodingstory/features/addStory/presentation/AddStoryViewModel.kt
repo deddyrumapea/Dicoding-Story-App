@@ -74,7 +74,7 @@ class AddStoryViewModel @Inject constructor(
 
         val newStory = NewStory(
             description = description,
-            photo = photoFile.value ?: return
+            photo = photoFile.value
         )
 
         uploadStory?.cancel()

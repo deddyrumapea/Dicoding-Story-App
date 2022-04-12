@@ -62,8 +62,6 @@ class LoginActivity : AppCompatActivity() {
         }
 
         btnLogin.setOnClickListener {
-            if (eetLogin.error != null || petLogin.error != null) return@setOnClickListener
-
             viewModel.onEvent(
                 LoginEvent.SendLoginRequest(
                     email = eetLogin.text.toString(),
