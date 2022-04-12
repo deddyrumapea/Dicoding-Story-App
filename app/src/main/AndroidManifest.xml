@@ -29,6 +29,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DicodingStory">
+        <receiver
+            android:name=".features.storiesStackWidget.StoriesStackWidget"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/story_stack_widget_info" />
+        </receiver>
+
         <activity
             android:name=".features.preferences.PreferencesActivity"
             android:exported="false" />
@@ -67,6 +79,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".features.storiesStackWidget.StoriesStackWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>

@@ -37,4 +37,7 @@
     <string name="open_phone_language_settings">Open phone language settings</string>
     <string name="language_settings_description">This app supports English and Bahasa Indonesia. Open phone language settings to change the language.</string>
     <string name="language">Language</string>
+    <string name="app_widget_description">Widget that shows stories stack from users</string>
+    <string name="stories_stack">Stories Stack</string>
+    <string name="em_no_data">No data</string>
 </resources>

@@ -34,4 +34,7 @@
     <string name="open_phone_language_settings">Buka pengaturan bahasa telepon</string>
     <string name="language_settings_description">Aplikasi ini mendukung bahasa Inggris dan Indonesia. Buka pengaturan bahasa telepon untuk mengubah bahasa.</string>
     <string name="language">Bahasa</string>
+    <string name="app_widget_description">Widget yang menampilkan tumpukan cerita dari pengguna</string>
+    <string name="stories_stack">Tumpukan Cerita</string>
+    <string name="em_no_data">Tidak ada data</string>
 </resources>

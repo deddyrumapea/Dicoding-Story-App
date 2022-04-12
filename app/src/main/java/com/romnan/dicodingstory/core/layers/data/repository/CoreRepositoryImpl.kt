@@ -1,22 +1,22 @@
-package com.romnan.dicodingstory.features.home.data.repository
+package com.romnan.dicodingstory.core.layers.data.repository
 
 import com.romnan.dicodingstory.R
 import com.romnan.dicodingstory.core.layers.domain.repository.PreferencesRepository
 import com.romnan.dicodingstory.core.util.Resource
 import com.romnan.dicodingstory.core.util.UIText
-import com.romnan.dicodingstory.features.home.data.remote.HomeApi
-import com.romnan.dicodingstory.features.home.domain.model.Story
-import com.romnan.dicodingstory.features.home.domain.repository.HomeRepository
+import com.romnan.dicodingstory.core.layers.data.remote.CoreApi
+import com.romnan.dicodingstory.core.layers.domain.model.Story
+import com.romnan.dicodingstory.core.layers.domain.repository.CoreRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
 
-class HomeRepositoryImpl(
-    private val api: HomeApi,
+class CoreRepositoryImpl(
+    private val api: CoreApi,
     private val prefRepo: PreferencesRepository
-) : HomeRepository {
+) : CoreRepository {
     override fun getAllStories(): Flow<Resource<List<Story>>> = flow {
         emit(Resource.Loading(emptyList()))
         try {

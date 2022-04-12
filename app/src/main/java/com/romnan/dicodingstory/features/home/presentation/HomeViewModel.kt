@@ -5,11 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.romnan.dicodingstory.R
+import com.romnan.dicodingstory.core.layers.domain.model.Story
+import com.romnan.dicodingstory.core.layers.domain.repository.CoreRepository
 import com.romnan.dicodingstory.core.layers.domain.repository.PreferencesRepository
 import com.romnan.dicodingstory.core.util.Resource
 import com.romnan.dicodingstory.core.util.UIText
-import com.romnan.dicodingstory.features.home.domain.model.Story
-import com.romnan.dicodingstory.features.home.domain.repository.HomeRepository
 import com.romnan.dicodingstory.features.home.presentation.model.HomeEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val homeRepo: HomeRepository,
+    private val coreRepo: CoreRepository,
     private val prefRepo: PreferencesRepository
 ) : ViewModel() {
     private val _storiesList = MutableLiveData<List<Story>>()
@@ -41,7 +41,6 @@ class HomeViewModel @Inject constructor(
 
     init {
         collectLoginState()
-        getAllStories()
     }
 
     fun onEvent(event: HomeEvent) {
@@ -53,7 +52,7 @@ class HomeViewModel @Inject constructor(
     private fun getAllStories() {
         getAllStoriesJob?.cancel()
         getAllStoriesJob = viewModelScope.launch {
-            homeRepo.getAllStories().onEach { result ->
+            coreRepo.getAllStories().onEach { result ->
                 when (result) {
                     is Resource.Error -> {
                         _errorMessage.value =
@@ -84,6 +83,7 @@ class HomeViewModel @Inject constructor(
             prefRepo.getAppPreferences().onEach { appPref ->
                 val loginState = appPref.loginResult
                 _isLoggedIn.value = loginState.token.isNotBlank()
+                if (isLoggedIn.value == true) getAllStories()
             }.launchIn(this)
         }
     }
