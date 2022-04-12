@@ -1,8 +1,11 @@
 package com.romnan.dicodingstory.core.di
 
 import android.content.Context
+import com.romnan.dicodingstory.core.layers.data.repository.CoreRepositoryImpl
 import com.romnan.dicodingstory.core.layers.data.repository.PreferencesRepositoryImpl
+import com.romnan.dicodingstory.core.layers.domain.repository.CoreRepository
 import com.romnan.dicodingstory.core.layers.domain.repository.PreferencesRepository
+import com.romnan.dicodingstory.core.layers.data.remote.CoreApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,5 +44,23 @@ class CoreModule {
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCoreRepository(
+        api: CoreApi,
+        prefRepo: PreferencesRepository
+    ): CoreRepository {
+        return CoreRepositoryImpl(
+            api = api,
+            prefRepo = prefRepo
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideHomeApi(coreRetrofit: Retrofit): CoreApi {
+        return coreRetrofit.create(CoreApi::class.java)
     }
 }

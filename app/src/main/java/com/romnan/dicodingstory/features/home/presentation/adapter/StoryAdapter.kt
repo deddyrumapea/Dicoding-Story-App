@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.romnan.dicodingstory.R
-import com.romnan.dicodingstory.features.home.domain.model.Story
+import com.romnan.dicodingstory.core.layers.domain.model.Story
 
 class StoryAdapter : RecyclerView.Adapter<StoryAdapter.StoryViewHolder>() {
     private val storiesList = ArrayList<Story>()

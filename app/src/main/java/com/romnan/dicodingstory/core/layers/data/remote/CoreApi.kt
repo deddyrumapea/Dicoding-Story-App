@@ -1,10 +1,10 @@
-package com.romnan.dicodingstory.features.home.data.remote
+package com.romnan.dicodingstory.core.layers.data.remote
 
-import com.romnan.dicodingstory.features.home.data.model.GetAllStoriesDto
+import com.romnan.dicodingstory.core.layers.data.model.GetAllStoriesDto
 import retrofit2.http.GET
 import retrofit2.http.Header
 
-interface HomeApi {
+interface CoreApi {
 
     //TODO: add page and size as parameters
     @GET("stories")

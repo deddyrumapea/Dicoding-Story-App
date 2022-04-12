@@ -1,4 +1,4 @@
-package com.romnan.dicodingstory.features.home.domain.model
+package com.romnan.dicodingstory.core.layers.domain.model
 
 data class Story(
     val createdAt: String?,
