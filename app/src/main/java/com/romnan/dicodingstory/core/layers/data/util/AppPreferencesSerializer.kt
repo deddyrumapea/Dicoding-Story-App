@@ -1,3 +1,5 @@
+@file:Suppress("BlockingMethodInNonBlockingContext")
+
 package com.romnan.dicodingstory.core.layers.data.util
 
 import androidx.datastore.core.Serializer

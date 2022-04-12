@@ -26,7 +26,7 @@ class AddStoryViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var _tempJpegUri: Uri? = null
-    val tempJpegUri get() = _tempJpegUri
+    private val tempJpegUri get() = _tempJpegUri
 
     private var _jpegCamState = MutableLiveData<JpegCamState>()
     val jpegCamState: LiveData<JpegCamState> = _jpegCamState
@@ -74,7 +74,7 @@ class AddStoryViewModel @Inject constructor(
     private fun setStoryPhotoToCapturedJpeg() {
         setStoryPhotoToCapturedJpegJob?.cancel()
         setStoryPhotoToCapturedJpegJob = viewModelScope.launch {
-            _jpegCamState.value = JpegCamState.Closed()
+            _jpegCamState.value = JpegCamState.Closed
             _storyPhoto.value = tempJpegUri?.let { repository.findJpegByUri(it) }
         }
     }
