@@ -44,4 +44,7 @@
     <string name="em_photo_null">Story photo can not be empty</string>
     <string name="em_stories_empty">There\'s no stories available</string>
     <string name="opening_camera">Opening camera…</string>
+    <string name="tn_tv_detail_user_name" translatable="false">tv_detail_user_name</string>
+    <string name="tn_iv_detail_photo" translatable="false">iv_detail_photo</string>
+    <string name="tn_iv_story_detail_background" translatable="false">iv_story_detail_background</string>
 </resources>

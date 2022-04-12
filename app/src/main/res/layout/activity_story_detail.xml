@@ -17,6 +17,7 @@
             android:layout_height="0dp"
             android:contentDescription="@string/background_image"
             android:src="@drawable/bg_rounded_corner"
+            android:transitionName="@string/tn_iv_story_detail_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/padding_16dp"
+            android:transitionName="@string/tn_tv_detail_user_name"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@tools:sample/lorem" />
 
@@ -42,6 +44,7 @@
             android:layout_height="200dp"
             android:layout_margin="@dimen/margin_16dp"
             android:contentDescription="@string/story_photo"
+            android:transitionName="@string/tn_iv_detail_photo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

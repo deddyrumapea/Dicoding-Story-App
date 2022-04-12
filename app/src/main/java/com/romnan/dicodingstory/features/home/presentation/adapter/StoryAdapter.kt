@@ -13,7 +13,7 @@ import com.romnan.dicodingstory.core.layers.domain.model.Story
 
 class StoryAdapter : RecyclerView.Adapter<StoryAdapter.StoryViewHolder>() {
     private val storiesList = ArrayList<Story>()
-    var onItemClick: ((Story) -> Unit)? = null
+    var onItemClick: ((View, Story) -> Unit)? = null
 
     fun setStoriesList(newStoriesList: List<Story>) {
         val diffResult = DiffUtil.calculateDiff(
@@ -43,13 +43,13 @@ class StoryAdapter : RecyclerView.Adapter<StoryAdapter.StoryViewHolder>() {
     inner class StoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         init {
             itemView.rootView.setOnClickListener {
-                onItemClick?.invoke(storiesList[adapterPosition])
+                onItemClick?.invoke(it, storiesList[adapterPosition])
             }
         }
 
         fun bind(story: Story) {
-            val ivPhoto = itemView.findViewById<ImageView>(R.id.iv_story_photo)
-            val tvUserName = itemView.findViewById<TextView>(R.id.tv_story_user_name)
+            val ivPhoto = itemView.findViewById<ImageView>(R.id.iv_story_item_photo)
+            val tvUserName = itemView.findViewById<TextView>(R.id.tv_story_item_user_name)
 
             Glide.with(itemView)
                 .load(story.photoUrl)

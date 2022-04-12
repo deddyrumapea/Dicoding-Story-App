@@ -5,14 +5,19 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.romnan.dicodingstory.R
+import com.romnan.dicodingstory.core.layers.domain.model.Story
 import com.romnan.dicodingstory.core.layers.presentation.model.StoryParcelable
 import com.romnan.dicodingstory.core.util.UIText
 import com.romnan.dicodingstory.features.addStory.presentation.AddStoryActivity
@@ -51,10 +56,19 @@ class HomeActivity : AppCompatActivity() {
             adapter = storyAdapter
         }
 
-        storyAdapter.onItemClick = { story ->
+        storyAdapter.onItemClick = { itemView: View, story: Story ->
+            val ivPhoto = itemView.findViewById<ImageView>(R.id.iv_story_item_photo)
+            val tvName = itemView.findViewById<TextView>(R.id.tv_story_item_user_name)
+
+            val animationBundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this@HomeActivity,
+                Pair(ivPhoto, getString(R.string.tn_iv_detail_photo)),
+                Pair(tvName, getString(R.string.tn_tv_detail_user_name))
+            ).toBundle()
+
             Intent(this, StoryDetailActivity::class.java).apply {
                 putExtra(StoryDetailActivity.EXTRA_STORY_PARCELABLE, StoryParcelable(story))
-                startActivity(this)
+                startActivity(this, animationBundle)
             }
         }
 
