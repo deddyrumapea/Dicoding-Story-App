@@ -99,7 +99,6 @@ class AddStoryViewModel @Inject constructor(
         }
     }
 
-    // TODO: change this runblocking
     private fun refreshTempJpegUri() = runBlocking {
         _tempJpegUri = repository.getNewTempJpegUri()
     }
