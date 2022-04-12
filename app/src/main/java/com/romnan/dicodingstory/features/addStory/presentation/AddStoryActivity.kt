@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.romnan.dicodingstory.R
 import com.romnan.dicodingstory.core.util.UIText
+import com.romnan.dicodingstory.features.addStory.domain.model.JpegCamState
 import com.romnan.dicodingstory.features.addStory.presentation.model.AddStoryEvent
 import com.romnan.dicodingstory.features.home.presentation.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,8 +48,24 @@ class AddStoryActivity : AppCompatActivity() {
         val btnGallery = findViewById<Button>(R.id.btn_gallery)
         val pbUploading = findViewById<ProgressBar>(R.id.pb_uploading)
 
-        btnCamera.setOnClickListener { launchCamera() }
+        btnCamera.setOnClickListener { viewModel.onEvent(AddStoryEvent.LaunchCamera) }
         btnGallery.setOnClickListener { launchGallery() }
+
+        viewModel.jpegCamState.observe(this) {
+            when (it) {
+                is JpegCamState.Closed -> btnCamera.text = getString(R.string.camera)
+                is JpegCamState.Opening -> btnCamera.text = getString(R.string.opening_camera)
+                is JpegCamState.Opened -> {
+                    btnCamera.text = getString(R.string.camera)
+                    launcherIntentCamera.launch(
+                        Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+                            resolveActivity(packageManager)
+                            putExtra(MediaStore.EXTRA_OUTPUT, it.tempJpegUri)
+                        }
+                    )
+                }
+            }
+        }
 
         viewModel.photoFile.observe(this) {
             Glide.with(this)
@@ -108,16 +125,6 @@ class AddStoryActivity : AppCompatActivity() {
             val selectedJpegUri: Uri = result.data?.data ?: return@registerForActivityResult
             viewModel.onEvent(AddStoryEvent.ImageSelected(selectedJpegUri))
         }
-    }
-
-    private fun launchCamera() {
-        viewModel.onEvent(AddStoryEvent.OpenCamera)
-        launcherIntentCamera.launch(
-            Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
-                resolveActivity(packageManager)
-                putExtra(MediaStore.EXTRA_OUTPUT, viewModel.tempJpegUri)
-            }
-        )
     }
 
     private val launcherIntentCamera = registerForActivityResult(

@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.romnan.dicodingstory.R
 import com.romnan.dicodingstory.core.util.Resource
 import com.romnan.dicodingstory.core.util.UIText
+import com.romnan.dicodingstory.features.addStory.domain.model.JpegCamState
 import com.romnan.dicodingstory.features.addStory.domain.model.NewStory
 import com.romnan.dicodingstory.features.addStory.domain.repository.AddStoryRepository
 import com.romnan.dicodingstory.features.addStory.presentation.model.AddStoryEvent
@@ -16,7 +17,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.io.File
 import javax.inject.Inject
 
@@ -26,7 +26,10 @@ class AddStoryViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var _tempJpegUri: Uri? = null
-    val tempJpegUri: Uri? get() = _tempJpegUri
+    val tempJpegUri get() = _tempJpegUri
+
+    private var _jpegCamState = MutableLiveData<JpegCamState>()
+    val jpegCamState: LiveData<JpegCamState> = _jpegCamState
 
     private val _storyPhoto = MutableLiveData<File>()
     val photoFile: LiveData<File> = _storyPhoto
@@ -44,8 +47,18 @@ class AddStoryViewModel @Inject constructor(
         when (event) {
             is AddStoryEvent.UploadImage -> uploadStory(event.description)
             is AddStoryEvent.ImageCaptured -> setStoryPhotoToCapturedJpeg()
-            is AddStoryEvent.OpenCamera -> refreshTempJpegUri()
+            is AddStoryEvent.LaunchCamera -> openJpegCam()
             is AddStoryEvent.ImageSelected -> setStoryPhotoToSelectedJpeg(event.selectedJpegUri)
+        }
+    }
+
+    private fun openJpegCam() {
+        viewModelScope.launch {
+            _jpegCamState.value = JpegCamState.Opening
+            repository.getNewTempJpegUri().let {
+                _tempJpegUri = it
+                _jpegCamState.value = JpegCamState.Opened(it)
+            }
         }
     }
 
@@ -61,6 +74,7 @@ class AddStoryViewModel @Inject constructor(
     private fun setStoryPhotoToCapturedJpeg() {
         setStoryPhotoToCapturedJpegJob?.cancel()
         setStoryPhotoToCapturedJpegJob = viewModelScope.launch {
+            _jpegCamState.value = JpegCamState.Closed()
             _storyPhoto.value = tempJpegUri?.let { repository.findJpegByUri(it) }
         }
     }
@@ -97,9 +111,5 @@ class AddStoryViewModel @Inject constructor(
                 }
             }.launchIn(this)
         }
-    }
-
-    private fun refreshTempJpegUri() = runBlocking {
-        _tempJpegUri = repository.getNewTempJpegUri()
     }
 }
