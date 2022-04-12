@@ -37,4 +37,10 @@
     <string name="app_widget_description">Widget yang menampilkan tumpukan cerita dari pengguna</string>
     <string name="stories_stack">Tumpukan Cerita</string>
     <string name="em_no_data">Tidak ada data</string>
+    <string name="em_name_blank">Nama tidak boleh kosong</string>
+    <string name="em_email_blank">Surel tidak boleh kosong</string>
+    <string name="em_password_blank">Kata sandi tidak boleh kosong</string>
+    <string name="em_description_blank">Deskripsi tidak boleh kosong</string>
+    <string name="em_stories_empty">Tidak ada cerita yang tersedia</string>
+    <string name="em_photo_null">Foto cerita tidak boleh kosong</string>
 </resources>
