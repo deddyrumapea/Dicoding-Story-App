@@ -16,14 +16,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
-import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.romnan.dicodingstory.R
 import com.romnan.dicodingstory.core.util.UIText
 import com.romnan.dicodingstory.features.addStory.presentation.model.AddStoryEvent
 import com.romnan.dicodingstory.features.home.presentation.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AddStoryActivity : AppCompatActivity() {
@@ -52,7 +50,12 @@ class AddStoryActivity : AppCompatActivity() {
         btnCamera.setOnClickListener { launchCamera() }
         btnGallery.setOnClickListener { launchGallery() }
 
-        viewModel.photoFile.observe(this) { ivPreview.setImageURI(it.toUri()) }
+        viewModel.photoFile.observe(this) {
+            Glide.with(this)
+                .load(it)
+                .placeholder(R.drawable.ic_baseline_sync_24)
+                .into(ivPreview)
+        }
 
         viewModel.errorMessage.observe(this) { uiText ->
             val message = when (uiText) {
