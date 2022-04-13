@@ -6,9 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
@@ -19,9 +17,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.romnan.dicodingstory.R
 import com.romnan.dicodingstory.core.layers.domain.model.Story
 import com.romnan.dicodingstory.core.layers.presentation.model.StoryParcelable
-import com.romnan.dicodingstory.core.util.UIText
 import com.romnan.dicodingstory.features.addStory.presentation.AddStoryActivity
-import com.romnan.dicodingstory.features.home.presentation.adapter.StoryAdapter
+import com.romnan.dicodingstory.features.home.presentation.adapter.StoriesLoadStateAdapter
+import com.romnan.dicodingstory.features.home.presentation.adapter.StoriesPagingAdapter
 import com.romnan.dicodingstory.features.home.presentation.model.HomeEvent
 import com.romnan.dicodingstory.features.login.presentation.LoginActivity
 import com.romnan.dicodingstory.features.preferences.PreferencesActivity
@@ -47,16 +45,19 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         val rvStoriesList = findViewById<RecyclerView>(R.id.rv_stories_list)
-        val pbStoriesList = findViewById<ProgressBar>(R.id.pb_stories_list)
         val fabAddStory = findViewById<FloatingActionButton>(R.id.fab_add_story)
 
-        val storyAdapter = StoryAdapter()
-        rvStoriesList.apply {
-            layoutManager = LinearLayoutManager(this@HomeActivity)
-            adapter = storyAdapter
+        val pagingAdapter = StoriesPagingAdapter()
+        val loadStateAdapter = StoriesLoadStateAdapter().apply {
+            onRetry = { pagingAdapter.retry() }
         }
 
-        storyAdapter.onItemClick = { itemView: View, story: Story ->
+        rvStoriesList.apply {
+            layoutManager = LinearLayoutManager(this@HomeActivity)
+            adapter = pagingAdapter.withLoadStateFooter(loadStateAdapter)
+        }
+
+        pagingAdapter.onItemClick = { itemView: View, story: Story ->
             val ivPhoto = itemView.findViewById<ImageView>(R.id.iv_story_item_photo)
             val tvName = itemView.findViewById<TextView>(R.id.tv_story_item_user_name)
 
@@ -77,23 +78,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
         viewModel.storiesList.observe(this) { storiesList ->
-            storyAdapter.setStoriesList(storiesList)
-        }
-
-        viewModel.isLoading.observe(this) { isLoading ->
-            pbStoriesList.visibility = if (isLoading) View.VISIBLE else View.GONE
-            rvStoriesList.visibility = if (!isLoading) View.VISIBLE else View.GONE
-        }
-
-        viewModel.errorMessage.observe(this) { uiText ->
-            val message = when (uiText) {
-                is UIText.DynamicString -> uiText.value
-                is UIText.StringResource -> getString(uiText.id)
-            }
-
-            if (message.isNotBlank()) {
-                Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-            }
+            pagingAdapter.submitData(lifecycle, storiesList)
         }
     }
 

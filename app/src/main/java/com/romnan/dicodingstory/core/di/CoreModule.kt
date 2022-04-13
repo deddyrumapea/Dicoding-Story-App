@@ -1,11 +1,12 @@
 package com.romnan.dicodingstory.core.di
 
 import android.content.Context
+import com.romnan.dicodingstory.core.layers.data.paging.StoriesPagingSource
+import com.romnan.dicodingstory.core.layers.data.remote.CoreApi
 import com.romnan.dicodingstory.core.layers.data.repository.CoreRepositoryImpl
 import com.romnan.dicodingstory.core.layers.data.repository.PreferencesRepositoryImpl
 import com.romnan.dicodingstory.core.layers.domain.repository.CoreRepository
 import com.romnan.dicodingstory.core.layers.domain.repository.PreferencesRepository
-import com.romnan.dicodingstory.core.layers.data.remote.CoreApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -50,12 +51,23 @@ class CoreModule {
     @Singleton
     fun provideCoreRepository(
         api: CoreApi,
-        prefRepo: PreferencesRepository
+        prefRepo: PreferencesRepository,
+        storiesPagingSource: StoriesPagingSource
     ): CoreRepository {
         return CoreRepositoryImpl(
             api = api,
-            prefRepo = prefRepo
+            prefRepo = prefRepo,
+            storiesPagingSource = storiesPagingSource
         )
+    }
+
+    @Provides
+    @Singleton
+    fun provideStoriesPagingSource(
+        coreApi: CoreApi,
+        prefRepo: PreferencesRepository
+    ): StoriesPagingSource {
+        return StoriesPagingSource(api = coreApi, prefRepo = prefRepo)
     }
 
     @Provides

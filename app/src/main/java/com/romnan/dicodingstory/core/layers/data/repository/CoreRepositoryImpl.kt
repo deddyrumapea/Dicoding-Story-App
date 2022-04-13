@@ -1,8 +1,12 @@
 package com.romnan.dicodingstory.core.layers.data.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.romnan.dicodingstory.R
+import com.romnan.dicodingstory.core.layers.data.paging.StoriesPagingSource
 import com.romnan.dicodingstory.core.layers.data.remote.CoreApi
 import com.romnan.dicodingstory.core.layers.domain.model.Story
 import com.romnan.dicodingstory.core.layers.domain.repository.CoreRepository
@@ -18,7 +22,8 @@ import java.io.IOException
 
 class CoreRepositoryImpl(
     private val api: CoreApi,
-    private val prefRepo: PreferencesRepository
+    private val prefRepo: PreferencesRepository,
+    private val storiesPagingSource: StoriesPagingSource
 ) : CoreRepository {
     override fun getAllStories(): Flow<Resource<List<Story>>> = flow {
 
@@ -53,5 +58,12 @@ class CoreRepositoryImpl(
             }
             emit(Resource.Error(errorUiText))
         }
+    }
+
+    override fun getPagedStories(): Flow<PagingData<Story>> {
+        return Pager(
+            config = PagingConfig(pageSize = 5),
+            pagingSourceFactory = { storiesPagingSource }
+        ).flow
     }
 }
