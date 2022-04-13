@@ -41,4 +41,5 @@
     <string name="em_stories_empty">Tidak ada cerita yang tersedia</string>
     <string name="em_photo_null">Foto cerita tidak boleh kosong</string>
     <string name="opening_camera">Membuka kamera…</string>
+    <string name="retry">Coba lagi</string>
 </resources>
