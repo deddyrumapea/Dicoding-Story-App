@@ -1,4 +1,6 @@
-package com.romnan.dicodingstory.core.layers.data.util
+@file:Suppress("BlockingMethodInNonBlockingContext")
+
+package com.romnan.dicodingstory.core.layers.data.datastore
 
 import androidx.datastore.core.Serializer
 import com.romnan.dicodingstory.core.layers.domain.model.AppPreferences

@@ -3,7 +3,7 @@ package com.romnan.dicodingstory.core.layers.data.repository
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
-import com.romnan.dicodingstory.core.layers.data.util.AppPreferencesSerializer
+import com.romnan.dicodingstory.core.layers.data.datastore.AppPreferencesSerializer
 import com.romnan.dicodingstory.core.layers.domain.model.AppPreferences
 import com.romnan.dicodingstory.core.layers.domain.model.LoginResult
 import com.romnan.dicodingstory.core.layers.domain.repository.PreferencesRepository

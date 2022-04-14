@@ -1,10 +1,13 @@
 package com.romnan.dicodingstory.features.login.data.repository
 
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.romnan.dicodingstory.R
 import com.romnan.dicodingstory.core.layers.domain.model.LoginResult
 import com.romnan.dicodingstory.core.layers.domain.repository.PreferencesRepository
 import com.romnan.dicodingstory.core.util.Resource
 import com.romnan.dicodingstory.core.util.UIText
+import com.romnan.dicodingstory.features.login.data.model.LoginResponse
 import com.romnan.dicodingstory.features.login.data.remote.LoginApi
 import com.romnan.dicodingstory.features.login.domain.repository.LoginRepository
 import kotlinx.coroutines.flow.Flow
@@ -24,8 +27,20 @@ class LoginRepositoryImpl(
 
         emit(Resource.Loading())
 
+        when {
+            email.isBlank() -> {
+                emit(Resource.Error(UIText.StringResource(R.string.em_email_blank)))
+                return@flow
+            }
+            password.isBlank() -> {
+                emit(Resource.Error(UIText.StringResource(R.string.em_password_blank)))
+                return@flow
+            }
+        }
+
         try {
             val response = loginApi.login(email = email, password = password)
+
             when {
                 response.error != true && response.loginResult != null -> {
                     prefRepo.saveLoginResult(response.loginResult)
@@ -38,23 +53,23 @@ class LoginRepositoryImpl(
 
                 else -> emit(Resource.Error(UIText.StringResource(R.string.em_unknown)))
             }
-        } catch (e: Exception) {
-            when (e) {
+        } catch (t: Throwable) {
+            val errorUiText: UIText = when (t) {
                 is HttpException -> {
-                    // TODO: extract this error code
-                    if (e.code() == 401) {
-                        emit(Resource.Error(UIText.StringResource(R.string.em_401)))
-                    } else {
-                        emit(Resource.Error(UIText.StringResource(R.string.em_http_exception)))
+                    try {
+                        val response = Gson().fromJson<LoginResponse>(
+                            t.response()?.errorBody()?.charStream(),
+                            object : TypeToken<LoginResponse>() {}.type
+                        )
+                        UIText.DynamicString(response.message!!)
+                    } catch (e: Exception) {
+                        UIText.StringResource(R.string.em_unknown)
                     }
                 }
-
-                is IOException -> emit(
-                    Resource.Error(UIText.StringResource(R.string.em_io_exception))
-                )
-
-                else -> emit(Resource.Error(UIText.StringResource(R.string.em_unknown)))
+                is IOException -> UIText.StringResource(R.string.em_io_exception)
+                else -> UIText.StringResource(R.string.em_unknown)
             }
+            emit(Resource.Error(errorUiText))
         }
     }
 }

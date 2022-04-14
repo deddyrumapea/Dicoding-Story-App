@@ -7,11 +7,8 @@
     <string name="register">Daftar</string>
     <string name="name">Nama</string>
     <string name="em_io_exception">Tidak dapat terhubung dengan server. Mohon periksa koneksi internet Anda.</string>
-    <string name="em_http_exception">Wah, terjadi error!</string>
     <string name="em_unknown">Terjadi error</string>
     <string name="logging_in">Sedang masuk…</string>
-    <string name="em_401">Surel atau kata sandi salah!</string>
-    <string name="em_400">Mohon masukkan surel lain</string>
     <string name="registering">Mendaftarkan…</string>
     <string name="background_image">Gambar latar belakang</string>
     <string name="story_photo">Foto cerita</string>
@@ -37,4 +34,12 @@
     <string name="app_widget_description">Widget yang menampilkan tumpukan cerita dari pengguna</string>
     <string name="stories_stack">Tumpukan Cerita</string>
     <string name="em_no_data">Tidak ada data</string>
+    <string name="em_name_blank">Nama tidak boleh kosong</string>
+    <string name="em_email_blank">Surel tidak boleh kosong</string>
+    <string name="em_password_blank">Kata sandi tidak boleh kosong</string>
+    <string name="em_description_blank">Deskripsi tidak boleh kosong</string>
+    <string name="em_stories_empty">Tidak ada cerita yang tersedia</string>
+    <string name="em_photo_null">Foto cerita tidak boleh kosong</string>
+    <string name="opening_camera">Membuka kamera…</string>
+    <string name="retry">Coba lagi</string>
 </resources>

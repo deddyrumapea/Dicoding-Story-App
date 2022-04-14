@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Environment
 import androidx.core.content.FileProvider
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.romnan.dicodingstory.R
 import com.romnan.dicodingstory.core.layers.domain.repository.PreferencesRepository
 import com.romnan.dicodingstory.core.util.Resource
@@ -15,6 +17,7 @@ import com.romnan.dicodingstory.core.util.UIText
 import com.romnan.dicodingstory.features.addStory.data.remote.AddStoryApi
 import com.romnan.dicodingstory.features.addStory.domain.model.NewStory
 import com.romnan.dicodingstory.features.addStory.domain.repository.AddStoryRepository
+import com.romnan.dicodingstory.features.login.data.model.LoginResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -38,6 +41,16 @@ class AddStoryRepositoryImpl(
 
     override fun uploadStory(newStory: NewStory): Flow<SimpleResource> = flow {
         emit(Resource.Loading())
+
+        if (newStory.photo == null) {
+            emit(Resource.Error(UIText.StringResource(R.string.em_photo_null)))
+            return@flow
+        }
+
+        if (newStory.description.isBlank()) {
+            emit(Resource.Error(UIText.StringResource(R.string.em_description_blank)))
+            return@flow
+        }
 
         try {
             val loginResult = prefRepo.getAppPreferences().first().loginResult
@@ -66,18 +79,23 @@ class AddStoryRepositoryImpl(
                 else -> emit(Resource.Error(UIText.StringResource(R.string.em_unknown)))
             }
 
-        } catch (e: Exception) {
-            when (e) {
+        } catch (t: Throwable) {
+            val errorUiText: UIText = when (t) {
                 is HttpException -> {
-                    emit(Resource.Error(UIText.StringResource(R.string.em_http_exception)))
+                    try {
+                        val response = Gson().fromJson<LoginResponse>(
+                            t.response()?.errorBody()?.charStream(),
+                            object : TypeToken<LoginResponse>() {}.type
+                        )
+                        UIText.DynamicString(response.message!!)
+                    } catch (e: Exception) {
+                        UIText.StringResource(R.string.em_unknown)
+                    }
                 }
-
-                is IOException -> emit(
-                    Resource.Error(UIText.StringResource(R.string.em_io_exception))
-                )
-
-                else -> emit(Resource.Error(UIText.StringResource(R.string.em_unknown)))
+                is IOException -> UIText.StringResource(R.string.em_io_exception)
+                else -> UIText.StringResource(R.string.em_unknown)
             }
+            emit(Resource.Error(errorUiText))
         }
     }
 

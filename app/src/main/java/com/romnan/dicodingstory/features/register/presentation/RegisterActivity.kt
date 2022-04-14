@@ -59,8 +59,6 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         btnRegister.setOnClickListener {
-            if (eetRegister.error != null || petRegister.error != null) return@setOnClickListener
-
             viewModel.onEvent(
                 RegisterEvent.SendRegisterRequest(
                     name = etName.text.toString(),
