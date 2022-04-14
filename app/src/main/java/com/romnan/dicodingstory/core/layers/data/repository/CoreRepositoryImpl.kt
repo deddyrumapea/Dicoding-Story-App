@@ -1,13 +1,12 @@
 package com.romnan.dicodingstory.core.layers.data.repository
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
+import androidx.paging.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.romnan.dicodingstory.R
-import com.romnan.dicodingstory.core.layers.data.paging.StoriesPagingSource
-import com.romnan.dicodingstory.core.layers.data.remote.CoreApi
+import com.romnan.dicodingstory.core.layers.data.paging.StoriesRemoteMediator
+import com.romnan.dicodingstory.core.layers.data.retrofit.CoreApi
+import com.romnan.dicodingstory.core.layers.data.room.dao.StoryDao
 import com.romnan.dicodingstory.core.layers.domain.model.Story
 import com.romnan.dicodingstory.core.layers.domain.repository.CoreRepository
 import com.romnan.dicodingstory.core.layers.domain.repository.PreferencesRepository
@@ -17,13 +16,15 @@ import com.romnan.dicodingstory.features.login.data.model.LoginResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import retrofit2.HttpException
 import java.io.IOException
 
 class CoreRepositoryImpl(
+    private val dao: StoryDao,
     private val api: CoreApi,
     private val prefRepo: PreferencesRepository,
-    private val storiesPagingSource: StoriesPagingSource
+    private val storiesRemoteMediator: StoriesRemoteMediator
 ) : CoreRepository {
     override fun getAllStories(): Flow<Resource<List<Story>>> = flow {
 
@@ -60,10 +61,14 @@ class CoreRepositoryImpl(
         }
     }
 
+    @OptIn(ExperimentalPagingApi::class)
     override fun getPagedStories(): Flow<PagingData<Story>> {
         return Pager(
             config = PagingConfig(pageSize = 5),
-            pagingSourceFactory = { storiesPagingSource }
-        ).flow
+            remoteMediator = storiesRemoteMediator,
+            pagingSourceFactory = { dao.getAll() }
+        ).flow.map { pagingData ->
+            pagingData.map { it.toStory() }
+        }
     }
 }

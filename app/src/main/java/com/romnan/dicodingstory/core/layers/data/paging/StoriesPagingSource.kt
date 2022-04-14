@@ -2,7 +2,7 @@ package com.romnan.dicodingstory.core.layers.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.romnan.dicodingstory.core.layers.data.remote.CoreApi
+import com.romnan.dicodingstory.core.layers.data.retrofit.CoreApi
 import com.romnan.dicodingstory.core.layers.domain.model.Story
 import com.romnan.dicodingstory.core.layers.domain.repository.PreferencesRepository
 import kotlinx.coroutines.flow.first

@@ -1,4 +1,4 @@
-package com.romnan.dicodingstory.core.layers.data.model
+package com.romnan.dicodingstory.core.layers.data.retrofit.model
 
 import com.romnan.dicodingstory.core.layers.domain.model.Story
 

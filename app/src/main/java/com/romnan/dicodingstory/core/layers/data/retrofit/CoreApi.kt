@@ -1,6 +1,6 @@
-package com.romnan.dicodingstory.core.layers.data.remote
+package com.romnan.dicodingstory.core.layers.data.retrofit
 
-import com.romnan.dicodingstory.core.layers.data.model.GetAllStoriesDto
+import com.romnan.dicodingstory.core.layers.data.retrofit.model.GetAllStoriesDto
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Query
