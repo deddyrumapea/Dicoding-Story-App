@@ -48,4 +48,10 @@
     <string name="tn_iv_detail_photo" translatable="false">iv_detail_photo</string>
     <string name="tn_iv_story_detail_background" translatable="false">iv_story_detail_background</string>
     <string name="retry">Retry</string>
+    <string name="stories_map">Stories Map</string>
+    <string name="hybrid">Hybrid</string>
+    <string name="terrain">Terrain</string>
+    <string name="satellite">Satellite</string>
+    <string name="normal">Normal</string>
+    <string name="em_loading_map_style">Failed loading custom map style</string>
 </resources>
