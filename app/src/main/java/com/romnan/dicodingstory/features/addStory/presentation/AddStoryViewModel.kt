@@ -1,5 +1,6 @@
 package com.romnan.dicodingstory.features.addStory.presentation
 
+import android.location.Location
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -43,13 +44,21 @@ class AddStoryViewModel @Inject constructor(
     private val _errorMessage = MutableLiveData<UIText>()
     val errorMessage: LiveData<UIText> = _errorMessage
 
+    private val _location = MutableLiveData<Location>()
+    val location: LiveData<Location> = _location
+
     fun onEvent(event: AddStoryEvent) {
         when (event) {
             is AddStoryEvent.UploadImage -> uploadStory(event.description)
             is AddStoryEvent.ImageCaptured -> setStoryPhotoToCapturedJpeg()
             is AddStoryEvent.LaunchCamera -> openJpegCam()
             is AddStoryEvent.ImageSelected -> setStoryPhotoToSelectedJpeg(event.selectedJpegUri)
+            is AddStoryEvent.AddLocation -> setLocation(event.location)
         }
+    }
+
+    private fun setLocation(location: Location) {
+        _location.value = location
     }
 
     private fun openJpegCam() {
@@ -86,7 +95,14 @@ class AddStoryViewModel @Inject constructor(
             return
         }
 
-        val newStory = NewStory(
+        val newStory = location.value?.let {
+            NewStory(
+                description = description,
+                photo = photoFile.value,
+                lat = it.latitude.toFloat(),
+                lon = it.longitude.toFloat()
+            )
+        } ?: NewStory(
             description = description,
             photo = photoFile.value
         )

@@ -42,4 +42,12 @@
     <string name="em_photo_null">Foto cerita tidak boleh kosong</string>
     <string name="opening_camera">Membuka kamera…</string>
     <string name="retry">Coba lagi</string>
+    <string name="stories_map">Peta Cerita</string>
+    <string name="hybrid">Hibrida</string>
+    <string name="terrain">Medan</string>
+    <string name="satellite">Satelit</string>
+    <string name="normal">Normal</string>
+    <string name="em_loading_map_style">Gagal memuat gaya peta kustom</string>
+    <string name="em_current_location">Gagal mendapatkan lokasi terkini</string>
+    <string name="add_current_location">Tambahkan lokasi terkini ke cerita ini</string>
 </resources>

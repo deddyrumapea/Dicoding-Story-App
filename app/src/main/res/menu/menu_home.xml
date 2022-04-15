@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/mi_stories_map"
+        android:icon="@drawable/ic_baseline_map_24"
+        android:title="@string/stories_map"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/mi_preferences"
         android:icon="@drawable/ic_baseline_settings_24"
         android:title="@string/preferences"

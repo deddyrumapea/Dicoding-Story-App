@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="18" />
@@ -29,32 +31,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DicodingStory">
-        <receiver
-            android:name=".features.storiesStackWidget.StoriesStackWidget"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
 
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/story_stack_widget_info" />
-        </receiver>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyASHh-hJr7fXUBpwztGgz0e0rcM2GDA96E" />
 
         <activity
-            android:name=".features.preferences.PreferencesActivity"
-            android:exported="false" />
-
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="com.romnan.dicodingstory"
+            android:name=".features.storiesMap.StoriesMapActivity"
             android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/paths_files" />
-        </provider>
-
+            android:parentActivityName=".features.home.presentation.HomeActivity" />
+        <activity
+            android:name=".features.preferences.PreferencesActivity"
+            android:exported="false"
+            android:parentActivityName=".features.home.presentation.HomeActivity" />
         <activity
             android:name=".features.storyDetail.StoryDetailActivity"
             android:exported="false"
@@ -79,6 +68,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name=".features.storiesStackWidget.StoriesStackWidget"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/story_stack_widget_info" />
+        </receiver>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.romnan.dicodingstory"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/paths_files" />
+        </provider>
 
         <service
             android:name=".features.storiesStackWidget.StoriesStackWidgetService"
