@@ -50,7 +50,7 @@ class StoriesMapActivity : AppCompatActivity(), OnMapReadyCallback {
         val latLngIndonesia = LatLng(0.7893, 113.9213)
         mMap.animateCamera(CameraUpdateFactory.newLatLng(latLngIndonesia))
 
-        getUserCurrentLocation()
+        enableMyLocation()
         setMapStyle()
 
         viewModel.storiesList.observe(this) { storiesList -> addStoriesMarkers(storiesList) }
@@ -94,10 +94,10 @@ class StoriesMapActivity : AppCompatActivity(), OnMapReadyCallback {
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
-            if (isGranted) getUserCurrentLocation()
+            if (isGranted) enableMyLocation()
         }
 
-    private fun getUserCurrentLocation() {
+    private fun enableMyLocation() {
         if (ContextCompat.checkSelfPermission(
                 this.applicationContext, Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
