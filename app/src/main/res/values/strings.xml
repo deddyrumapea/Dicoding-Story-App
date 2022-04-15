@@ -54,4 +54,7 @@
     <string name="satellite">Satellite</string>
     <string name="normal">Normal</string>
     <string name="em_loading_map_style">Failed loading custom map style</string>
+    <string name="em_current_location">Failed fetching current location</string>
+    <string name="add_current_location">Add current location to this story</string>
+    <string name="format_location" translatable="false">%1$f, %2$f</string>
 </resources>

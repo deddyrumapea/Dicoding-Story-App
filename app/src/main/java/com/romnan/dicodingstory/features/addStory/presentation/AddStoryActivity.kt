@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.Intent.ACTION_GET_CONTENT
 import android.content.pm.PackageManager
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -17,6 +18,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.romnan.dicodingstory.R
 import com.romnan.dicodingstory.core.util.UIText
 import com.romnan.dicodingstory.features.addStory.domain.model.JpegCamState
@@ -29,6 +32,8 @@ class AddStoryActivity : AppCompatActivity() {
 
     private val viewModel: AddStoryViewModel by viewModels()
 
+    private var fusedLocationClient: FusedLocationProviderClient? = null
+
     private var etDescription: EditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,20 +41,29 @@ class AddStoryActivity : AppCompatActivity() {
         supportActionBar?.title = getString(R.string.add_story)
         setContentView(R.layout.activity_add_story)
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
         if (!allPermissionsGranted()) {
             ActivityCompat.requestPermissions(
                 this, REQUIRED_PERMISSIONS, PERMISSION_REQUEST_CODE
             )
         }
 
+
         etDescription = findViewById(R.id.et_description)
+        val tvLocation = findViewById<TextView>(R.id.tv_current_location)
         val ivPreview = findViewById<ImageView>(R.id.iv_preview_image)
         val btnCamera = findViewById<Button>(R.id.btn_camera)
         val btnGallery = findViewById<Button>(R.id.btn_gallery)
         val pbUploading = findViewById<ProgressBar>(R.id.pb_uploading)
 
+        tvLocation.setOnClickListener { getMyLastLocation() }
         btnCamera.setOnClickListener { viewModel.onEvent(AddStoryEvent.LaunchCamera) }
         btnGallery.setOnClickListener { launchGallery() }
+
+        viewModel.location.observe(this) {
+            tvLocation.text = getString(R.string.format_location, it.latitude, it.longitude)
+        }
 
         viewModel.jpegCamState.observe(this) {
             when (it) {
@@ -102,6 +116,48 @@ class AddStoryActivity : AppCompatActivity() {
             btnGallery.isEnabled = !isUploading
             etDescription?.isEnabled = !isUploading
             pbUploading.visibility = if (isUploading) View.VISIBLE else View.GONE
+        }
+    }
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            when {
+                permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true -> getMyLastLocation()
+                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true -> getMyLastLocation()
+            }
+        }
+
+    private fun checkPermission(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun getMyLastLocation() {
+        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) &&
+            checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+        ) {
+            fusedLocationClient?.lastLocation?.addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    viewModel.onEvent(AddStoryEvent.AddLocation(location))
+                } else {
+                    Toast.makeText(
+                        this,
+                        getString(R.string.em_current_location),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        } else {
+            requestPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
         }
     }
 

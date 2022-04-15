@@ -19,6 +19,19 @@
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/tv_current_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_16dp"
+        android:background="@drawable/bg_rounded_corner"
+        android:drawablePadding="@dimen/padding_8dp"
+        android:gravity="center_vertical"
+        android:padding="@dimen/padding_16dp"
+        android:text="@string/add_current_location"
+        app:drawableStartCompat="@drawable/ic_baseline_location_on_24"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
         android:id="@+id/et_description"
         android:layout_width="match_parent"
@@ -33,7 +46,7 @@
         android:maxLines="6"
         android:padding="@dimen/padding_16dp"
         android:scrollbars="vertical"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/tv_current_location" />
 
     <ImageView
         android:id="@+id/iv_background"

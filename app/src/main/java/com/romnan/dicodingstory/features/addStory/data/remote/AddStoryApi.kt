@@ -16,4 +16,14 @@ interface AddStoryApi {
         @Part photo: MultipartBody.Part,
         @Part("description") description: RequestBody
     ): AddStoryResponse
+
+    @Multipart
+    @POST("stories")
+    suspend fun uploadStory(
+        @Header("Authorization") bearerToken: String,
+        @Part photo: MultipartBody.Part,
+        @Part("description") description: RequestBody,
+        @Part("lat") lat: RequestBody,
+        @Part("lon") lon: RequestBody
+    ): AddStoryResponse
 }

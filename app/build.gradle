@@ -103,4 +103,9 @@ dependencies {
     implementation "androidx.room:room-paging:$room_version"
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    // Location services
+    def maps_version = "18.0.0"
+    implementation "com.google.android.gms:play-services-maps:$maps_version"
+    implementation "com.google.android.gms:play-services-location:$maps_version"
 }

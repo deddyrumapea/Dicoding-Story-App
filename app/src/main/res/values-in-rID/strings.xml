@@ -48,4 +48,6 @@
     <string name="satellite">Satelit</string>
     <string name="normal">Normal</string>
     <string name="em_loading_map_style">Gagal memuat gaya peta kustom</string>
+    <string name="em_current_location">Gagal mendapatkan lokasi terkini</string>
+    <string name="add_current_location">Tambahkan lokasi terkini ke cerita ini</string>
 </resources>

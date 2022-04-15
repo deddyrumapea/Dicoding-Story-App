@@ -56,6 +56,8 @@ class AddStoryRepositoryImpl(
             val loginResult = prefRepo.getAppPreferences().first().loginResult
             val bearerToken = "Bearer ${loginResult.token}"
 
+            val rbLat = newStory.lat?.toString()?.toRequestBody("text/plain".toMediaType())
+            val rbLon = newStory.lon?.toString()?.toRequestBody("text/plain".toMediaType())
             val rbDescription = newStory.description.toRequestBody("text/plain".toMediaType())
             val rbPhoto = compressJpeg(newStory.photo)
                 .asRequestBody("image/jpeg".toMediaTypeOrNull())
@@ -66,11 +68,22 @@ class AddStoryRepositoryImpl(
                 body = rbPhoto
             )
 
-            val response = api.uploadStory(
-                bearerToken = bearerToken,
-                photo = photoMultipart,
-                description = rbDescription
-            )
+            val response = if (rbLat != null && rbLon != null) {
+                api.uploadStory(
+                    bearerToken = bearerToken,
+                    photo = photoMultipart,
+                    description = rbDescription,
+                    lat = rbLat,
+                    lon = rbLon
+                )
+            } else {
+                api.uploadStory(
+                    bearerToken = bearerToken,
+                    photo = photoMultipart,
+                    description = rbDescription
+                )
+            }
+
             when {
                 response.error != true -> emit(Resource.Success(Unit))
                 response.message != null -> emit(
