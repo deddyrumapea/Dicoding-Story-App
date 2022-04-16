@@ -6,11 +6,13 @@ import android.content.res.Resources
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -20,6 +22,7 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.romnan.dicodingstory.R
 import com.romnan.dicodingstory.core.layers.domain.model.Story
+import com.romnan.dicodingstory.core.util.UIText
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,9 +37,24 @@ class StoriesMapActivity : AppCompatActivity(), OnMapReadyCallback {
         supportActionBar?.title = getString(R.string.stories_map)
         setContentView(R.layout.activity_stories_map)
 
+        val pbLoading = findViewById<ProgressBar>(R.id.pb_loading_map)
+
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        viewModel.isLoading.observe(this) { pbLoading.isVisible = it }
+
+        viewModel.errorMessage.observe(this) { uiText ->
+            val message = when (uiText) {
+                is UIText.DynamicString -> uiText.value
+                is UIText.StringResource -> getString(uiText.id)
+            }
+
+            if (message.isNotBlank()) {
+                Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {

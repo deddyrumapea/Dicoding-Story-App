@@ -37,7 +37,7 @@ class StoriesMapViewModel @Inject constructor(
     private fun getStoriesList() {
         getStoriesListJob?.cancel()
         getStoriesListJob = viewModelScope.launch {
-            coreRepo.getAllStories().onEach { resource ->
+            coreRepo.getStoriesWithLatLong(20, 100).onEach { resource ->
                 when (resource) {
                     is Resource.Error -> {
                         _errorMessage.value = resource.uiText
