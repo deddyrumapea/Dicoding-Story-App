@@ -132,7 +132,7 @@ class AddStoryRepositoryImpl(
     }
 
     @Suppress("BlockingMethodInNonBlockingContext")
-    override suspend fun getNewTempJpeg(): File = withContext(Dispatchers.IO) {
+    private suspend fun getNewTempJpeg(): File = withContext(Dispatchers.IO) {
         val sdf = SimpleDateFormat("dd-MMM-yyyy", Locale.US)
         val timeStamp: String = sdf.format(System.currentTimeMillis())
 
