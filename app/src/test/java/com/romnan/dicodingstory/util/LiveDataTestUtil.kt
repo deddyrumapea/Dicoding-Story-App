@@ -1,4 +1,4 @@
-package com.romnan.dicodingstory
+package com.romnan.dicodingstory.util
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
@@ -29,7 +29,7 @@ fun <T> LiveData<T>.getOrAwaitValue(
 
         // Don't wait indefinitely if the LiveData is not set.
         if (!latch.await(time, timeUnit)) {
-            throw TimeoutException("LiveData value was never set.")
+            throw TimeoutException(TestErrorMsg.LIVEDATA_VALUE_WAS_NEVER_SET)
         }
 
     } finally {
@@ -39,3 +39,4 @@ fun <T> LiveData<T>.getOrAwaitValue(
     @Suppress("UNCHECKED_CAST")
     return data as T
 }
+
