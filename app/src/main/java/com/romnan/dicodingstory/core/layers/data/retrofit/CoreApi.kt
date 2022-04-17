@@ -7,8 +7,9 @@ import retrofit2.http.Query
 
 interface CoreApi {
     @GET("stories")
-    suspend fun getAllStories(
-        @Header("Authorization") bearerToken: String
+    suspend fun getStories(
+        @Header("Authorization") bearerToken: String,
+        @Query("location") withLocation: Int = CoreApiParamValues.WITH_LOCATION_FALSE
     ): GetAllStoriesDto
 
     @GET("stories")

@@ -10,6 +10,7 @@ import com.romnan.dicodingstory.core.util.Resource
 import com.romnan.dicodingstory.core.util.UIText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -37,7 +38,7 @@ class StoriesMapViewModel @Inject constructor(
     private fun getStoriesList() {
         getStoriesListJob?.cancel()
         getStoriesListJob = viewModelScope.launch {
-            coreRepo.getStoriesWithLatLong(20, 100).onEach { resource ->
+            coreRepo.getStoriesWithLocation().onEach { resource ->
                 when (resource) {
                     is Resource.Error -> {
                         _errorMessage.value = resource.uiText
@@ -49,6 +50,7 @@ class StoriesMapViewModel @Inject constructor(
                         _storiesList.value = resource.data
                     }
                     is Resource.Success -> {
+                        delay(500)
                         _isLoading.value = false
                         _storiesList.value = resource.data
                     }

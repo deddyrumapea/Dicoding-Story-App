@@ -8,5 +8,5 @@ import kotlinx.coroutines.flow.Flow
 interface CoreRepository {
     fun getAllStories(): Flow<Resource<List<Story>>>
     fun getPagedStories(): Flow<PagingData<Story>>
-    fun getStoriesWithLatLong(maxPage: Int, pageSize: Int): Flow<Resource<List<Story>>>
+    fun getStoriesWithLocation(): Flow<Resource<List<Story>>>
 }
