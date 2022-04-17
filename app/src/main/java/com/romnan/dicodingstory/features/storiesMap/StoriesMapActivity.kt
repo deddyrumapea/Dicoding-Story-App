@@ -60,16 +60,11 @@ class StoriesMapActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        mMap.uiSettings.isZoomControlsEnabled = true
-        mMap.uiSettings.isIndoorLevelPickerEnabled = true
-        mMap.uiSettings.isCompassEnabled = true
-        mMap.uiSettings.isMapToolbarEnabled = true
+        setMapStyle()
+        enableMyLocation()
 
         val latLngIndonesia = LatLng(0.7893, 113.9213)
         mMap.animateCamera(CameraUpdateFactory.newLatLng(latLngIndonesia))
-
-        enableMyLocation()
-        setMapStyle()
 
         viewModel.storiesList.observe(this) { storiesList -> addStoriesMarkers(storiesList) }
     }
