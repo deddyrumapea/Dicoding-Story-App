@@ -50,7 +50,6 @@ class StoriesMapViewModel @Inject constructor(
                         _storiesList.value = resource.data
                     }
                     is Resource.Success -> {
-                        delay(500)
                         _isLoading.value = false
                         _storiesList.value = resource.data
                     }
