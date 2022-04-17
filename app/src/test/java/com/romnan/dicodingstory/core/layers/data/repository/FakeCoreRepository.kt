@@ -21,10 +21,7 @@ class FakeCoreRepository(
         pagedStories?.let { emit(it) }
     }
 
-    override fun getStoriesWithLatLong(
-        maxPage: Int,
-        pageSize: Int
-    ): Flow<Resource<List<Story>>> = flow {
+    override fun getStoriesWithLocation(): Flow<Resource<List<Story>>> = flow {
         storiesWithLatLong?.let { emit(it) }
     }
 }
