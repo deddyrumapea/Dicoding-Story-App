@@ -4,10 +4,10 @@ import androidx.paging.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.romnan.dicodingstory.R
-import com.romnan.dicodingstory.core.layers.data.paging.StoriesRemoteMediator
 import com.romnan.dicodingstory.core.layers.data.retrofit.CoreApi
 import com.romnan.dicodingstory.core.layers.data.retrofit.CoreApiParamValues
 import com.romnan.dicodingstory.core.layers.data.room.dao.StoryDao
+import com.romnan.dicodingstory.core.layers.data.room.entity.StoryEntity
 import com.romnan.dicodingstory.core.layers.domain.model.Story
 import com.romnan.dicodingstory.core.layers.domain.repository.CoreRepository
 import com.romnan.dicodingstory.core.layers.domain.repository.PreferencesRepository
@@ -21,11 +21,12 @@ import kotlinx.coroutines.flow.map
 import retrofit2.HttpException
 import java.io.IOException
 
-class CoreRepositoryImpl(
+@OptIn(ExperimentalPagingApi::class)
+class CoreRepositoryImpl constructor(
     private val dao: StoryDao,
     private val api: CoreApi,
     private val prefRepo: PreferencesRepository,
-    private val storiesRemoteMediator: StoriesRemoteMediator
+    private val storiesRemoteMediator: RemoteMediator<Int, StoryEntity>
 ) : CoreRepository {
     override fun getAllStories(): Flow<Resource<List<Story>>> = flow {
 
@@ -102,7 +103,6 @@ class CoreRepositoryImpl(
         }
     }
 
-    @OptIn(ExperimentalPagingApi::class)
     override fun getPagedStories(): Flow<PagingData<Story>> {
         return Pager(
             config = PagingConfig(pageSize = 5),
