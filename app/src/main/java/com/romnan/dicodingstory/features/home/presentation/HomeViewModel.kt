@@ -16,11 +16,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    coreRepo: CoreRepository,
-    private val prefRepo: PreferencesRepository
+    coreRepository: CoreRepository,
+    private val preferencesRepository: PreferencesRepository
 ) : ViewModel() {
     val storiesList: LiveData<PagingData<Story>> =
-        coreRepo.getPagedStories()
+        coreRepository.getPagedStories()
             .cachedIn(viewModelScope)
             .asLiveData()
 
@@ -42,13 +42,13 @@ class HomeViewModel @Inject constructor(
 
     private fun logout() {
         logoutJob?.cancel()
-        logoutJob = viewModelScope.launch { prefRepo.deleteLoginResult() }
+        logoutJob = viewModelScope.launch { preferencesRepository.deleteLoginResult() }
     }
 
     private fun collectLoginState() {
         collectLoginStateJob?.cancel()
         collectLoginStateJob = viewModelScope.launch {
-            prefRepo.getAppPreferences().onEach { appPref ->
+            preferencesRepository.getAppPreferences().onEach { appPref ->
                 val loginState = appPref.loginResult
                 _isLoggedIn.value = loginState.token.isNotBlank()
             }.launchIn(this)

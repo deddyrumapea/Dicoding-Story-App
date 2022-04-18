@@ -17,7 +17,7 @@ import java.io.IOException
 
 class LoginRepositoryImpl(
     private val loginApi: LoginApi,
-    private val prefRepo: PreferencesRepository
+    private val preferencesRepository: PreferencesRepository
 ) : LoginRepository {
 
     override fun login(
@@ -43,7 +43,7 @@ class LoginRepositoryImpl(
 
             when {
                 response.error != true && response.loginResult != null -> {
-                    prefRepo.saveLoginResult(response.loginResult)
+                    preferencesRepository.saveLoginResult(response.loginResult)
                     emit(Resource.Success(response.loginResult))
                 }
 

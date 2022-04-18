@@ -34,9 +34,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class AddStoryRepositoryImpl(
-    private val api: AddStoryApi,
+    private val addStoryApi: AddStoryApi,
     private val appContext: Context,
-    private val prefRepo: PreferencesRepository
+    private val preferencesRepository: PreferencesRepository
 ) : AddStoryRepository {
 
     override fun uploadStory(newStory: NewStory): Flow<SimpleResource> = flow {
@@ -53,7 +53,7 @@ class AddStoryRepositoryImpl(
         }
 
         try {
-            val loginResult = prefRepo.getAppPreferences().first().loginResult
+            val loginResult = preferencesRepository.getAppPreferences().first().loginResult
             val bearerToken = "Bearer ${loginResult.token}"
 
             val rbLat = newStory.lat?.toString()?.toRequestBody("text/plain".toMediaType())
@@ -69,7 +69,7 @@ class AddStoryRepositoryImpl(
             )
 
             val response = if (rbLat != null && rbLon != null) {
-                api.uploadStory(
+                addStoryApi.uploadStory(
                     bearerToken = bearerToken,
                     photo = photoMultipart,
                     description = rbDescription,
@@ -77,7 +77,7 @@ class AddStoryRepositoryImpl(
                     lon = rbLon
                 )
             } else {
-                api.uploadStory(
+                addStoryApi.uploadStory(
                     bearerToken = bearerToken,
                     photo = photoMultipart,
                     description = rbDescription

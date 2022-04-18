@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddStoryViewModel @Inject constructor(
-    private val repository: AddStoryRepository
+    private val addStoryRepository: AddStoryRepository
 ) : ViewModel() {
 
     private var _tempJpegUri: Uri? = null
@@ -64,7 +64,7 @@ class AddStoryViewModel @Inject constructor(
     private fun openJpegCam() {
         viewModelScope.launch {
             _jpegCamState.value = JpegCamState.Opening
-            repository.getNewTempJpegUri().let {
+            addStoryRepository.getNewTempJpegUri().let {
                 _tempJpegUri = it
                 _jpegCamState.value = JpegCamState.Opened(it)
             }
@@ -75,7 +75,7 @@ class AddStoryViewModel @Inject constructor(
     private fun setStoryPhotoToSelectedJpeg(selectedJpegUri: Uri) {
         setStoryPhotoToSelectedJpegJob?.cancel()
         setStoryPhotoToSelectedJpegJob = viewModelScope.launch {
-            _storyPhoto.value = repository.findJpegByUri(selectedJpegUri)
+            _storyPhoto.value = addStoryRepository.findJpegByUri(selectedJpegUri)
         }
     }
 
@@ -84,7 +84,7 @@ class AddStoryViewModel @Inject constructor(
         setStoryPhotoToCapturedJpegJob?.cancel()
         setStoryPhotoToCapturedJpegJob = viewModelScope.launch {
             _jpegCamState.value = JpegCamState.Closed
-            _storyPhoto.value = tempJpegUri?.let { repository.findJpegByUri(it) }
+            _storyPhoto.value = tempJpegUri?.let { addStoryRepository.findJpegByUri(it) }
         }
     }
 
@@ -109,7 +109,7 @@ class AddStoryViewModel @Inject constructor(
 
         uploadStory?.cancel()
         uploadStory = viewModelScope.launch {
-            repository.uploadStory(newStory).onEach { result ->
+            addStoryRepository.uploadStory(newStory).onEach { result ->
                 when (result) {
                     is Resource.Error -> {
                         _errorMessage.value = result.uiText

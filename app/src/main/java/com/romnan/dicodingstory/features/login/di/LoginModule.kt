@@ -23,7 +23,7 @@ class LoginModule {
     ): LoginRepository {
         return LoginRepositoryImpl(
             loginApi = loginApi,
-            prefRepo = preferencesRepository
+            preferencesRepository = preferencesRepository
         )
     }
 
