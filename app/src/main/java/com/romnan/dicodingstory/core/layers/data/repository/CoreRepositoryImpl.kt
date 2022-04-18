@@ -28,7 +28,7 @@ class CoreRepositoryImpl constructor(
     private val preferencesRepository: PreferencesRepository,
     private val storiesRemoteMediator: RemoteMediator<Int, StoryEntity>
 ) : CoreRepository {
-    override fun getAllStories(): Flow<Resource<List<Story>>> = flow {
+    override fun getStories(): Flow<Resource<List<Story>>> = flow {
 
         emit(Resource.Loading(emptyList()))
 
@@ -37,12 +37,22 @@ class CoreRepositoryImpl constructor(
             val bearerToken = "Bearer ${loginResult.token}"
             val response = coreApi.getStories(bearerToken = bearerToken)
 
-            if (response.listStory?.isEmpty() == true) {
-                emit(Resource.Error(UIText.StringResource(R.string.em_stories_empty)))
-            } else {
-                emit(Resource.Success(response.listStory))
+            when (response.error) {
+                true -> emit(Resource.Error(
+                    uiText = response.message?.let { UIText.DynamicString(it) }
+                        ?: UIText.StringResource(R.string.em_unknown)
+                ))
+                false -> emit(
+                    response.listStory?.let {
+                        if (it.isNotEmpty()) Resource.Success(it) else null
+                    } ?: Resource.Error(UIText.StringResource(R.string.em_stories_empty))
+                )
+                null -> emit(
+                    response.listStory?.let {
+                        if (it.isNotEmpty()) Resource.Success(it) else null
+                    } ?: Resource.Error(UIText.StringResource(R.string.em_unknown))
+                )
             }
-
         } catch (t: Throwable) {
             val errorUiText: UIText = when (t) {
                 is HttpException -> {
@@ -75,22 +85,30 @@ class CoreRepositoryImpl constructor(
                 withLocation = CoreApiParamValues.WITH_LOCATION_TRUE
             )
 
-            if (response.listStory?.isEmpty() == true) {
-                emit(Resource.Error(UIText.StringResource(R.string.em_stories_empty)))
-            } else {
-                emit(Resource.Success(response.listStory))
+            when (response.error) {
+                true -> emit(Resource.Error(
+                    uiText = response.message?.let { UIText.DynamicString(it) }
+                        ?: UIText.StringResource(R.string.em_unknown)
+                ))
+                false -> emit(
+                    response.listStory?.let {
+                        if (it.isNotEmpty()) Resource.Success(it) else null
+                    } ?: Resource.Error(UIText.StringResource(R.string.em_stories_empty))
+                )
+                null -> emit(
+                    response.listStory?.let {
+                        if (it.isNotEmpty()) Resource.Success(it) else null
+                    } ?: Resource.Error(UIText.StringResource(R.string.em_unknown))
+                )
             }
-
         } catch (t: Throwable) {
             val errorUiText: UIText = when (t) {
                 is HttpException -> {
                     try {
-                        val responseBody = t.response()?.errorBody()
                         val response = Gson().fromJson<LoginResponse>(
-                            responseBody?.charStream(),
+                            t.response()?.errorBody()?.charStream(),
                             object : TypeToken<LoginResponse>() {}.type
                         )
-                        responseBody?.close()
                         UIText.DynamicString(response.message!!)
                     } catch (e: Exception) {
                         UIText.StringResource(R.string.em_unknown)
