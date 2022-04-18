@@ -49,9 +49,9 @@ class CoreModule {
         storiesRemoteMediator: StoriesRemoteMediator
     ): CoreRepository {
         return CoreRepositoryImpl(
-            dao = coreDatabase.storyDao,
-            api = api,
-            prefRepo = prefRepo,
+            storyDao = coreDatabase.storyDao,
+            coreApi = api,
+            preferencesRepository = prefRepo,
             storiesRemoteMediator = storiesRemoteMediator
         )
     }
@@ -64,9 +64,9 @@ class CoreModule {
         prefRepo: PreferencesRepository
     ): StoriesRemoteMediator {
         return StoriesRemoteMediator(
-            database = coreDatabase,
-            api = coreApi,
-            prefRepo = prefRepo
+            coreDatabase = coreDatabase,
+            coreApi = coreApi,
+            preferencesRepository = prefRepo
         )
     }
 

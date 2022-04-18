@@ -23,9 +23,9 @@ import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)
 class CoreRepositoryImpl constructor(
-    private val dao: StoryDao,
-    private val api: CoreApi,
-    private val prefRepo: PreferencesRepository,
+    private val storyDao: StoryDao,
+    private val coreApi: CoreApi,
+    private val preferencesRepository: PreferencesRepository,
     private val storiesRemoteMediator: RemoteMediator<Int, StoryEntity>
 ) : CoreRepository {
     override fun getAllStories(): Flow<Resource<List<Story>>> = flow {
@@ -33,9 +33,9 @@ class CoreRepositoryImpl constructor(
         emit(Resource.Loading(emptyList()))
 
         try {
-            val loginResult = prefRepo.getAppPreferences().first().loginResult
+            val loginResult = preferencesRepository.getAppPreferences().first().loginResult
             val bearerToken = "Bearer ${loginResult.token}"
-            val response = api.getStories(bearerToken = bearerToken)
+            val response = coreApi.getStories(bearerToken = bearerToken)
 
             if (response.listStory?.isEmpty() == true) {
                 emit(Resource.Error(UIText.StringResource(R.string.em_stories_empty)))
@@ -68,9 +68,9 @@ class CoreRepositoryImpl constructor(
         emit(Resource.Loading(emptyList()))
 
         try {
-            val loginResult = prefRepo.getAppPreferences().first().loginResult
+            val loginResult = preferencesRepository.getAppPreferences().first().loginResult
             val bearerToken = "Bearer ${loginResult.token}"
-            val response = api.getStories(
+            val response = coreApi.getStories(
                 bearerToken = bearerToken,
                 withLocation = CoreApiParamValues.WITH_LOCATION_TRUE
             )
@@ -107,7 +107,7 @@ class CoreRepositoryImpl constructor(
         return Pager(
             config = PagingConfig(pageSize = 5),
             remoteMediator = storiesRemoteMediator,
-            pagingSourceFactory = { dao.getAll() }
+            pagingSourceFactory = { storyDao.getAll() }
         ).flow.map { pagingData ->
             pagingData.map { it.toStory() }
         }

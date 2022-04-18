@@ -14,9 +14,9 @@ import kotlinx.coroutines.flow.first
 
 @OptIn(ExperimentalPagingApi::class)
 class StoriesRemoteMediator(
-    private val database: CoreDatabase,
-    private val api: CoreApi,
-    private val prefRepo: PreferencesRepository
+    private val coreDatabase: CoreDatabase,
+    private val coreApi: CoreApi,
+    private val preferencesRepository: PreferencesRepository
 ) : RemoteMediator<Int, StoryEntity>() {
 
     override suspend fun initialize(): InitializeAction {
@@ -52,10 +52,10 @@ class StoriesRemoteMediator(
         }
 
         try {
-            val loginResult = prefRepo.getAppPreferences().first().loginResult
+            val loginResult = preferencesRepository.getAppPreferences().first().loginResult
             val bearerToken = "Bearer ${loginResult.token}"
 
-            val response = api.getPagedStories(
+            val response = coreApi.getPagedStories(
                 bearerToken = bearerToken,
                 page = page,
                 size = state.config.pageSize
@@ -64,10 +64,10 @@ class StoriesRemoteMediator(
 
             val endOfPaginationReached = storyEntitiesList.isEmpty()
 
-            database.withTransaction {
+            coreDatabase.withTransaction {
                 if (loadType == LoadType.REFRESH) {
-                    database.storyRemoteKeysDao.deleteAll()
-                    database.storyDao.deleteAll()
+                    coreDatabase.storyRemoteKeysDao.deleteAll()
+                    coreDatabase.storyDao.deleteAll()
                 }
 
                 val prevKey = if (page == 1) null else page - 1
@@ -76,8 +76,8 @@ class StoriesRemoteMediator(
                     StoryRemoteKeysEntity(id = it.id, prevKey = prevKey, nextKey = nextKey)
                 }
 
-                database.storyRemoteKeysDao.insertList(keysList)
-                database.storyDao.insertList(storyEntitiesList)
+                coreDatabase.storyRemoteKeysDao.insertList(keysList)
+                coreDatabase.storyDao.insertList(storyEntitiesList)
             }
 
             return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
@@ -92,7 +92,7 @@ class StoriesRemoteMediator(
         val lastNonEmptyPage = state.pages.lastOrNull { it.data.isNotEmpty() }
         val lastStory = lastNonEmptyPage?.data?.lastOrNull() ?: return null
 
-        return database.storyRemoteKeysDao.getById(lastStory.id)
+        return coreDatabase.storyRemoteKeysDao.getById(lastStory.id)
     }
 
     private suspend fun getRemoteKeyForFirstItem(
@@ -101,7 +101,7 @@ class StoriesRemoteMediator(
         val firstNonEmptyPage = state.pages.firstOrNull { it.data.isNotEmpty() }
         val firstStory = firstNonEmptyPage?.data?.firstOrNull() ?: return null
 
-        return database.storyRemoteKeysDao.getById(firstStory.id)
+        return coreDatabase.storyRemoteKeysDao.getById(firstStory.id)
     }
 
     private suspend fun getRemoteKeyClosestToCurrentPosition(
@@ -110,7 +110,7 @@ class StoriesRemoteMediator(
         val anchorPosition = state.anchorPosition ?: return null
         val closestStoryToPosition = state.closestItemToPosition(anchorPosition) ?: return null
 
-        return database.storyRemoteKeysDao.getById(closestStoryToPosition.id)
+        return coreDatabase.storyRemoteKeysDao.getById(closestStoryToPosition.id)
     }
 
     companion object {
