@@ -13,10 +13,6 @@ class PreferencesRepositoryImpl(
     appContext: Context
 ) : PreferencesRepository {
 
-    private val Context.dataStore by dataStore(
-        fileName = APP_PREF_FILE_NAME,
-        AppPreferencesSerializer
-    )
     private val dataStore: DataStore<AppPreferences> = appContext.dataStore
 
     override fun getAppPreferences(): Flow<AppPreferences> {
@@ -37,5 +33,10 @@ class PreferencesRepositoryImpl(
 
     companion object {
         private const val APP_PREF_FILE_NAME = "app-preferences.json"
+
+        private val Context.dataStore by dataStore(
+            fileName = APP_PREF_FILE_NAME,
+            AppPreferencesSerializer
+        )
     }
 }
