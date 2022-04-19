@@ -59,8 +59,11 @@ class AddStoryRepositoryImpl(
             val rbLat = newStory.lat?.toString()?.toRequestBody("text/plain".toMediaType())
             val rbLon = newStory.lon?.toString()?.toRequestBody("text/plain".toMediaType())
             val rbDescription = newStory.description.toRequestBody("text/plain".toMediaType())
-            val rbPhoto = compressJpeg(newStory.photo)
-                .asRequestBody("image/jpeg".toMediaTypeOrNull())
+            val rbPhoto = try {
+                compressJpeg(newStory.photo)
+            } catch (e: Exception) {
+                newStory.photo // Abort compressing
+            }.asRequestBody("image/jpeg".toMediaTypeOrNull())
 
             val photoMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
                 name = "photo",
@@ -128,6 +131,7 @@ class AddStoryRepositoryImpl(
         } while (streamLength > 1000000)
 
         bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, FileOutputStream(file))
+
         return@withContext file
     }
 
@@ -151,21 +155,25 @@ class AddStoryRepositoryImpl(
     }
 
     @Suppress("BlockingMethodInNonBlockingContext")
-    override suspend fun findJpegByUri(uri: Uri): File = withContext(Dispatchers.IO) {
-        val contentResolver: ContentResolver = appContext.contentResolver
-        val tempJpeg = getNewTempJpeg()
+    override suspend fun findJpegByUri(uri: Uri): File? = withContext(Dispatchers.IO) {
+        try {
+            val contentResolver: ContentResolver = appContext.contentResolver
+            val tempJpeg = getNewTempJpeg()
 
-        val inputStream: InputStream =
-            contentResolver.openInputStream(uri) ?: return@withContext tempJpeg
-        val outputStream: OutputStream = FileOutputStream(tempJpeg)
+            val inputStream: InputStream =
+                contentResolver.openInputStream(uri) ?: return@withContext null
+            val outputStream: OutputStream = FileOutputStream(tempJpeg)
 
-        val buf = ByteArray(1024)
-        var len: Int
-        while (inputStream.read(buf).also { len = it } > 0) outputStream.write(buf, 0, len)
+            val buf = ByteArray(1024)
+            var len: Int
+            while (inputStream.read(buf).also { len = it } > 0) outputStream.write(buf, 0, len)
 
-        outputStream.close()
-        inputStream.close()
+            outputStream.close()
+            inputStream.close()
 
-        return@withContext tempJpeg
+            return@withContext tempJpeg
+        } catch (e: Exception) {
+            return@withContext null
+        }
     }
 }

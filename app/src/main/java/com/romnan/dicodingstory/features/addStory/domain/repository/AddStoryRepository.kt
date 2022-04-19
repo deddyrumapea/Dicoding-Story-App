@@ -9,5 +9,5 @@ import java.io.File
 interface AddStoryRepository {
     fun uploadStory(newStory: NewStory): Flow<SimpleResource>
     suspend fun getNewTempJpegUri(): Uri
-    suspend fun findJpegByUri(uri: Uri): File
+    suspend fun findJpegByUri(uri: Uri): File?
 }
