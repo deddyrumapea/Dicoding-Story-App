@@ -41,7 +41,7 @@ object Faker {
                     createdAt = System.currentTimeMillis().toString(),
                     name = "test_user$i",
                     photoUrl = "https://cdn.statically.io/og/Hello%20World$i.jpg",
-                    description = "Lorem ipsum dolor sit amet $i",
+                    description = "${getLorem()} $i",
                     lat = i.toDouble(),
                     lon = i.toDouble()
                 )
@@ -49,6 +49,16 @@ object Faker {
         }
         return storiesList
     }
+
+    fun getStory(): Story = Story(
+        id = UUID.randomUUID().toString(),
+        createdAt = System.currentTimeMillis().toString(),
+        name = "test_user",
+        photoUrl = "https://cdn.statically.io/og/Hello%20World.jpg",
+        description = getLorem(),
+        lat = 69.420,
+        lon = 42.069
+    )
 
     fun getLocation(): Location =
         Location("fake_location").apply {

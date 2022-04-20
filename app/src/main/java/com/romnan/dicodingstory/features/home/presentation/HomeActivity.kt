@@ -17,6 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.romnan.dicodingstory.R
 import com.romnan.dicodingstory.core.layers.domain.model.Story
 import com.romnan.dicodingstory.core.layers.presentation.model.StoryParcelable
+import com.romnan.dicodingstory.core.util.DebugConfig
 import com.romnan.dicodingstory.features.addStory.presentation.AddStoryActivity
 import com.romnan.dicodingstory.features.home.presentation.adapter.StoriesLoadStateAdapter
 import com.romnan.dicodingstory.features.home.presentation.adapter.StoriesPagingAdapter
@@ -35,7 +36,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         viewModel.isLoggedIn.observe(this) { isLoggedIn ->
-            if (!isLoggedIn) {
+            if (!isLoggedIn && DebugConfig.ALLOW_AUTO_START_ACTIVITY) {
                 Intent(this@HomeActivity, LoginActivity::class.java).run {
                     startActivity(this)
                     this@HomeActivity.finish()

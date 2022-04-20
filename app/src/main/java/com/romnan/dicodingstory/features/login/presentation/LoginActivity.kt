@@ -11,6 +11,7 @@ import androidx.core.util.Pair
 import com.romnan.dicodingstory.R
 import com.romnan.dicodingstory.core.layers.presentation.customView.EmailEditText
 import com.romnan.dicodingstory.core.layers.presentation.customView.PasswordEditText
+import com.romnan.dicodingstory.core.util.DebugConfig
 import com.romnan.dicodingstory.core.util.UIText
 import com.romnan.dicodingstory.features.home.presentation.HomeActivity
 import com.romnan.dicodingstory.features.register.presentation.RegisterActivity
@@ -42,7 +43,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         viewModel.isLoggedIn.observe(this) { isLoggedIn ->
-            if (isLoggedIn) {
+            if (isLoggedIn && DebugConfig.ALLOW_AUTO_START_ACTIVITY) {
                 Intent(this@LoginActivity, HomeActivity::class.java).run {
                     startActivity(this)
                     this@LoginActivity.finish()
