@@ -11,6 +11,7 @@ import com.romnan.dicodingstory.core.layers.data.retrofit.CoreApi
 import com.romnan.dicodingstory.core.layers.data.room.CoreDatabase
 import com.romnan.dicodingstory.core.layers.domain.repository.CoreRepository
 import com.romnan.dicodingstory.core.layers.domain.repository.PreferencesRepository
+import com.romnan.dicodingstory.core.util.ApiConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,7 +36,7 @@ class CoreModule {
     @Singleton
     fun provideCoreRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://story-api.dicoding.dev/v1/")
+            .baseUrl(ApiConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

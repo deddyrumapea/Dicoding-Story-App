@@ -1,0 +1,96 @@
+{
+  "error": false,
+  "message": "Stories fetched successfully",
+  "listStory": [
+    {
+      "id": "story-8UU5woLBuH4VQGNF",
+      "name": "testUser1",
+      "description": "Lorem ipsum dolor sit amet",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1650357878333_iGMMTFLx.jpg",
+      "createdAt": "2022-04-19T08:44:38.334Z",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "story-WbM0ZAjFHzFIPgOJ",
+      "name": "testUser2",
+      "description": "Lorem ipsum dolor sit amet",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1650357809311_FUbzXb8-.jpg",
+      "createdAt": "2022-04-19T08:43:29.314Z",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "story-Zjdh2_f1am558wNT",
+      "name": "testUser3",
+      "description": "Lorem ipsum dolor sit amet",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1650357781176_9tkULH7P.jpg",
+      "createdAt": "2022-04-19T08:43:01.178Z",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "story-_ydUvezY4DxebRlt",
+      "name": "testUser4",
+      "description": "Lorem ipsum dolor sit amet",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1650357726014_e9booLTN.jpg",
+      "createdAt": "2022-04-19T08:42:06.014Z",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "story--1_fH3pBnsTikZYG",
+      "name": "testUser5",
+      "description": "Lorem ipsum dolor sit amet",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1650357494078_55srrE1_.png",
+      "createdAt": "2022-04-19T08:38:14.083Z",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "story-Md-_2UNzUx8z1Dsi",
+      "name": "testUser6",
+      "description": "Lorem ipsum dolor sit amet",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1650357493372_NmOeab55.jpg",
+      "createdAt": "2022-04-19T08:38:13.375Z",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "story-z-MZlih7l4eeba3M",
+      "name": "testUser7",
+      "description": "Lorem ipsum dolor sit amet",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1650357452515_9EwRK32k.png",
+      "createdAt": "2022-04-19T08:37:32.517Z",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "story-6_tOA897TPimGxnT",
+      "name": "testUser8",
+      "description": "Lorem ipsum dolor sit amet",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1650357438043_CWqIoU7Y.jpg",
+      "createdAt": "2022-04-19T08:37:18.044Z",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "story-Kd6DE2mi_XfxsIDa",
+      "name": "testUser9",
+      "description": "Lorem ipsum dolor sit amet",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1650357435555_jg3J_x5N.jpg",
+      "createdAt": "2022-04-19T08:37:15.556Z",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "story-f51vlLvJ5Ip7ncHE",
+      "name": "testUser10",
+      "description": "Lorem ipsum dolor sit amet",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1650357369446_8451kRvY.jpg",
+      "createdAt": "2022-04-19T08:36:09.451Z",
+      "lat": null,
+      "lon": null
+    }
+  ]
+}

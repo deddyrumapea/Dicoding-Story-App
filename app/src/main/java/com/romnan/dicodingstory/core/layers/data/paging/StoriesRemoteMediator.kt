@@ -10,6 +10,7 @@ import com.romnan.dicodingstory.core.layers.data.room.CoreDatabase
 import com.romnan.dicodingstory.core.layers.data.room.entity.StoryEntity
 import com.romnan.dicodingstory.core.layers.data.room.entity.StoryRemoteKeysEntity
 import com.romnan.dicodingstory.core.layers.domain.repository.PreferencesRepository
+import com.romnan.dicodingstory.core.util.espressoIdlingResource
 import kotlinx.coroutines.flow.first
 
 @OptIn(ExperimentalPagingApi::class)
@@ -26,7 +27,7 @@ class StoriesRemoteMediator(
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, StoryEntity>
-    ): MediatorResult {
+    ): MediatorResult = espressoIdlingResource {
         val page: Int = when (loadType) {
             LoadType.REFRESH -> {
                 val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
