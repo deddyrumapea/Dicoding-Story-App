@@ -1,6 +1,7 @@
 package com.romnan.dicodingstory.core.util
 
 import androidx.test.espresso.idling.CountingIdlingResource
+import com.romnan.dicodingstory.BuildConfig
 
 object EspressoIdlingResource {
 
@@ -21,10 +22,12 @@ object EspressoIdlingResource {
 }
 
 inline fun <T> espressoIdlingResource(function: () -> T): T {
-    EspressoIdlingResource.increment() // Set app as busy.
+    if (!BuildConfig.DEBUG) return function()
+
+    EspressoIdlingResource.increment()
     return try {
         function()
     } finally {
-        EspressoIdlingResource.decrement() // Set app as idle.
+        EspressoIdlingResource.decrement()
     }
 }
