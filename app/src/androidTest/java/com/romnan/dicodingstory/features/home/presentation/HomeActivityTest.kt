@@ -8,7 +8,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.romnan.dicodingstory.R
-import com.romnan.dicodingstory.core.util.ApiConfig
+import com.romnan.dicodingstory.core.util.DebugConfig
 import com.romnan.dicodingstory.core.util.EspressoIdlingResource
 import com.romnan.dicodingstory.util.JsonTestUtil
 import okhttp3.mockwebserver.MockResponse
@@ -28,7 +28,7 @@ class HomeActivityTest {
         // in order to run this test properly
 
         mockWebServer.start(8080)
-        ApiConfig.BASE_URL = "http://127.0.0.1:8080/"
+        DebugConfig.BASE_URL = "http://127.0.0.1:8080/"
 
         IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
     }

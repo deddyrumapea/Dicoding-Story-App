@@ -3,6 +3,7 @@ package com.romnan.dicodingstory.core.di
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
+import com.romnan.dicodingstory.BuildConfig
 import com.romnan.dicodingstory.core.layers.data.paging.StoriesPagingSource
 import com.romnan.dicodingstory.core.layers.data.paging.StoriesRemoteMediator
 import com.romnan.dicodingstory.core.layers.data.repository.CoreRepositoryImpl
@@ -11,7 +12,7 @@ import com.romnan.dicodingstory.core.layers.data.retrofit.CoreApi
 import com.romnan.dicodingstory.core.layers.data.room.CoreDatabase
 import com.romnan.dicodingstory.core.layers.domain.repository.CoreRepository
 import com.romnan.dicodingstory.core.layers.domain.repository.PreferencesRepository
-import com.romnan.dicodingstory.core.util.ApiConfig
+import com.romnan.dicodingstory.core.util.DebugConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,7 +37,10 @@ class CoreModule {
     @Singleton
     fun provideCoreRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(ApiConfig.BASE_URL)
+            .baseUrl(
+                if (BuildConfig.DEBUG) DebugConfig.BASE_URL
+                else "https://story-api.dicoding.dev/v1/"
+            )
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
