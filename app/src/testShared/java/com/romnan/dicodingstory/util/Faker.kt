@@ -18,12 +18,6 @@ object Faker {
         lon = if (withLocation) 42.069F else null
     )
 
-    fun getLoginResponse(success: Boolean) = LoginResponse(
-        error = !success,
-        loginResult = if (success) getFilledLoginResult() else null,
-        message = if (success) "success" else "something went wrong"
-    )
-
     fun getName() = "John Doe #${System.currentTimeMillis()}"
 
     fun getEmail() = "${System.currentTimeMillis()}@gmail.com"
