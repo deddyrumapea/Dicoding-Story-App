@@ -8,11 +8,19 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.romnan.dicodingstory.R
+import com.romnan.dicodingstory.core.util.DebugConfig
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class LoginActivityTest {
+
+    @Before
+    fun setUp() {
+        DebugConfig.ALLOW_AUTO_START_ACTIVITY = false
+    }
+
     @Test
     @MediumTest
     fun openLoginActivity_showLoginFormProperly() {
