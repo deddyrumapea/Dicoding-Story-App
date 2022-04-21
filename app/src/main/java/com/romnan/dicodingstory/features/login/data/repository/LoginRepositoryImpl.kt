@@ -7,7 +7,6 @@ import com.romnan.dicodingstory.core.layers.domain.model.LoginResult
 import com.romnan.dicodingstory.core.layers.domain.repository.PreferencesRepository
 import com.romnan.dicodingstory.core.util.Resource
 import com.romnan.dicodingstory.core.util.UIText
-import com.romnan.dicodingstory.core.util.espressoIdlingResource
 import com.romnan.dicodingstory.features.login.data.model.LoginResponse
 import com.romnan.dicodingstory.features.login.data.remote.LoginApi
 import com.romnan.dicodingstory.features.login.domain.repository.LoginRepository
@@ -25,53 +24,51 @@ class LoginRepositoryImpl(
         email: String,
         password: String
     ): Flow<Resource<LoginResult>> = flow {
-        espressoIdlingResource {
-            emit(Resource.Loading())
+        emit(Resource.Loading())
+
+        when {
+            email.isBlank() -> {
+                emit(Resource.Error(UIText.StringResource(R.string.em_email_blank)))
+                return@flow
+            }
+            password.isBlank() -> {
+                emit(Resource.Error(UIText.StringResource(R.string.em_password_blank)))
+                return@flow
+            }
+        }
+
+        try {
+            val response = loginApi.login(email = email, password = password)
 
             when {
-                email.isBlank() -> {
-                    emit(Resource.Error(UIText.StringResource(R.string.em_email_blank)))
-                    return@flow
+                response.error != true && response.loginResult != null -> {
+                    preferencesRepository.saveLoginResult(response.loginResult)
+                    emit(Resource.Success(response.loginResult))
                 }
-                password.isBlank() -> {
-                    emit(Resource.Error(UIText.StringResource(R.string.em_password_blank)))
-                    return@flow
+
+                response.error == true && response.message != null -> {
+                    emit(Resource.Error(UIText.DynamicString(response.message)))
                 }
+
+                else -> emit(Resource.Error(UIText.StringResource(R.string.em_unknown)))
             }
-
-            try {
-                val response = loginApi.login(email = email, password = password)
-
-                when {
-                    response.error != true && response.loginResult != null -> {
-                        preferencesRepository.saveLoginResult(response.loginResult)
-                        emit(Resource.Success(response.loginResult))
+        } catch (t: Throwable) {
+            val errorUiText: UIText = when (t) {
+                is HttpException -> {
+                    try {
+                        val response = Gson().fromJson<LoginResponse>(
+                            t.response()?.errorBody()?.charStream(),
+                            object : TypeToken<LoginResponse>() {}.type
+                        )
+                        UIText.DynamicString(response.message!!)
+                    } catch (e: Exception) {
+                        UIText.StringResource(R.string.em_unknown)
                     }
-
-                    response.error == true && response.message != null -> {
-                        emit(Resource.Error(UIText.DynamicString(response.message)))
-                    }
-
-                    else -> emit(Resource.Error(UIText.StringResource(R.string.em_unknown)))
                 }
-            } catch (t: Throwable) {
-                val errorUiText: UIText = when (t) {
-                    is HttpException -> {
-                        try {
-                            val response = Gson().fromJson<LoginResponse>(
-                                t.response()?.errorBody()?.charStream(),
-                                object : TypeToken<LoginResponse>() {}.type
-                            )
-                            UIText.DynamicString(response.message!!)
-                        } catch (e: Exception) {
-                            UIText.StringResource(R.string.em_unknown)
-                        }
-                    }
-                    is IOException -> UIText.StringResource(R.string.em_io_exception)
-                    else -> UIText.StringResource(R.string.em_unknown)
-                }
-                emit(Resource.Error(errorUiText))
+                is IOException -> UIText.StringResource(R.string.em_io_exception)
+                else -> UIText.StringResource(R.string.em_unknown)
             }
+            emit(Resource.Error(errorUiText))
         }
     }
 }
