@@ -57,12 +57,6 @@ class HomeActivityTest {
         mockWebServer.enqueue(mockResponse)
 
         onView(withId(R.id.rv_stories_list)).check(matches(isDisplayed()))
-        onView(withText("testUser1")).check(matches(isDisplayed()))
-        onView(withId(R.id.rv_stories_list)).perform(
-            RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                hasDescendant(withText("testUser10"))
-            )
-        )
     }
 
     @Test
@@ -77,15 +71,13 @@ class HomeActivityTest {
             .setBody(JsonTestUtil.readStringFromFile("stories_success.json"))
         mockWebServer.enqueue(mockResponse)
 
-        onView(withText("testUser1")).perform(click())
+        onView(withId(R.id.rv_stories_list)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click())
+        )
         intended(hasComponent(StoryDetailActivity::class.java.name))
 
         onView(withId(R.id.iv_detail_photo)).check(matches(isDisplayed()))
-
         onView(withId(R.id.tv_detail_user_name)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_user_name)).check(matches(withText("testUser1")))
-
         onView(withId(R.id.tv_detail_description)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_description)).check(matches(withText("Lorem ipsum dolor sit amet")))
     }
 }
