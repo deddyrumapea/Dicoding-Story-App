@@ -202,14 +202,6 @@ class AddStoryRepositoryImplTest {
         assertThat(jpegFile?.extension).isEqualTo("jpeg")
     }
 
-    private fun getMd5Checksum(file: File): ByteArray {
-        val messageDigest = MessageDigest.getInstance("MD5")
-        Files.newInputStream(file.toPath()).use { `is` ->
-            DigestInputStream(`is`, messageDigest).use {}
-        }
-        return messageDigest.digest()
-    }
-
     @Test
     fun findJpegByUriWithInvalidUri_Null() = runBlocking {
         val addStoryRepository = createAddStoryRepositoryImpl()
