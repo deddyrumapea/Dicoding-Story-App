@@ -6,7 +6,6 @@ import com.romnan.dicodingstory.core.layers.domain.model.AppPreferences
 import com.romnan.dicodingstory.core.layers.domain.model.LoginResult
 import com.romnan.dicodingstory.core.layers.domain.model.Story
 import com.romnan.dicodingstory.features.addStory.domain.model.NewStory
-import com.romnan.dicodingstory.features.login.data.model.LoginResponse
 import java.io.File
 import java.util.*
 
