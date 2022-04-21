@@ -25,8 +25,8 @@ class AddStoryModule {
         @ApplicationContext context: Context
     ): AddStoryRepository {
         return AddStoryRepositoryImpl(
-            api = addStoryApi,
-            prefRepo = prefRepo,
+            addStoryApi = addStoryApi,
+            preferencesRepository = prefRepo,
             appContext = context
         )
     }

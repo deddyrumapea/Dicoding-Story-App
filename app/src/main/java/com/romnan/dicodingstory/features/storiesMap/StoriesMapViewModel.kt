@@ -10,7 +10,6 @@ import com.romnan.dicodingstory.core.util.Resource
 import com.romnan.dicodingstory.core.util.UIText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -18,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StoriesMapViewModel @Inject constructor(
-    private val coreRepo: CoreRepository
+    private val coreRepository: CoreRepository
 ) : ViewModel() {
     private val _storiesList = MutableLiveData<List<Story>>()
     val storiesList: LiveData<List<Story>> = _storiesList
@@ -38,7 +37,7 @@ class StoriesMapViewModel @Inject constructor(
     private fun getStoriesList() {
         getStoriesListJob?.cancel()
         getStoriesListJob = viewModelScope.launch {
-            coreRepo.getStoriesWithLocation().onEach { resource ->
+            coreRepository.getStoriesWithLocation().onEach { resource ->
                 when (resource) {
                     is Resource.Error -> {
                         _errorMessage.value = resource.uiText

@@ -1,0 +1,128 @@
+Skenario Testing DicodingStory 
+oleh Deddy Romnan Rumapea
+
+Unit Testing
+1. Repository
+	a. CoreRepositoryImplTest
+		- Ketika meminta stories, memastikan Resource.Loading dikembalikan pertama kali.
+		- Ketika berhasil mendapatkan stories, memastikan mengembalikan Resource.Success dengan daftar stories yang benar.
+		- Ketika gagal mendapatkan stories dan ada pesan error dari server, memastikan mengembalikan Resource.Error dengan pesan error yang sesuai.
+		- Ketika gagal mendapatkan stories dan tidak ada pesan error dari server, memastikan mengembalikan Resource.Error dengan pesan error yang sesuai.
+		- Ketika gagal mendapatkan stories dan response null dari server, memastikan mengembalikan Resource.Error dengan pesan error yang sesuai.
+		- Ketika berhasil mendapatkan stories namun hanya mendapatkan list kosong dari server, memastikan mengembalikan Resource.Error dengan pesan error yang sesuai.
+		- Ketika meminta stories dengan lokasi, memastikan Resource.Loading dikembalikan pertama kali.
+		- Ketika berhasil mendapatkan stories dengan lokasi, memastikan mengembalikan Resource.Success dengan daftar stories yang benar.
+		- Ketika gagal mendapatkan stories dengan lokasi dan ada pesan error dari server, memastikan mengembalikan Resource.Error dengan pesan error yang sesuai.
+		- Ketika gagal mendapatkan stories dengan lokasi dan tidak ada pesan error dari server, memastikan mengembalikan Resource.Error dengan pesan error yang sesuai.
+		- Ketika gagal mendapatkan stories dengan lokasi dan response null dari server, memastikan mengembalikan Resource.Error dengan pesan error yang sesuai.
+		- Ketika berhasil mendapatkan stories dengan lokasi namun hanya mendapatkan list kosong dari server, memastikan mengembalikan Resource.Error dengan pesan error yang sesuai.
+		- Ketika meminta stories dengan halaman, memastikan kembalian tidak null
+
+	b. PreferencesRepositoryImplTest
+		- Ketika mendapatkan AppPreference pertama kali, mengembalikan DefaultValue.
+		- Ketika menyimpan data login, AppPreferences menyimpan data yang benar.
+		- Ketika menghapus data login, AppPreferences direset ke DefaultValue.
+
+	c. AddStoryRepositoryImplTest
+		- Ketika mengunggah story, memastikan mengembalikan Resource.Loading terlebih dahulu.
+		- Ketika sukses mengunggah story, memastikan mengembalikan Resource.Success.
+		- Ketika gagal mengunggah story dan mendapat pesan dari server, memastikan mengembalikan Resource.Error dengan pesan yang sesuai.
+		- Ketika gagal mengunggah story dan tidak mendapat pesan dari server, memastikan mengembalikan Resource.Error dengan pesan yang sesuai.
+		- Ketika mengunggah story dengan file foto null, memastikan mengembalikan Resource.Error dengan pesan yang sesuai.
+		- Ketika mengunggah story dengan deskripti kosong, memastikan mengembalikan Resource.Error dengan pesan yang sesuai.
+		- Ketika gagal mengunggah story karena IOException, memastikan mengembalikan Resource.Error dengan pesan yang sesuai.
+		- Ketika gagal mengunggah story karena Exception lainnya, memastikan mengembalikan Resource.Error dengan pesan yang sesuai.
+		- Ketika getNewTempJpegUri, memastikan mengembalikan Uri yang segar setiap kalinya.
+		- Ketika getNewTempJpegUri, memastikan mengembalikan Uri dari file jpeg.
+		- Ketika findJpegByUri dengan Uri yang valid, memastikan mengembalikan file jpeg.
+		- Ketika findJpegByUri dengan Uri yang tidak valid, memastikan mengembalikan null.
+
+	d. AddStoryViewModelTest
+		- Ketika berhasil mengupload story, memastikan isUploaded = true
+		- Ketika berhasil mengupload story, memastikan errorMessage tidak pernah diset
+		- Ketika gagal mengupload story, memastikan isUploaded = false
+		- Ketika gagal mengupload story, memastikan errorMessage tidak null
+		- Ketika gambar dijepret, memastikan photoFile bernilai file gambar yang dijepret
+		- Ketika gambar dijepret, memastikan jpegCamState bernilai Closed
+		- Ketika meluncurkan kamera, memastikan jpegCamState bernilai Opened dengan Uri yang benar
+		- Ketika gambar dipilih, memastikan photoFile bernilai file yang benar
+		- Ketika menambahkan lokasi, memastikan nilai lokasi benar
+		- Ketika gambar sedang diupload, memastikan nilai isLoading = true
+
+	e. HomeViewModelTest
+		- Ketika memanggil getStoriesList, pastikan storiesList tidak null.
+		- Ketika user sudah login, pastikan isLoggedIn = true.
+		- Ketika user tidak login, pastikan isLoggedIn = false.
+		- Ketika Logout, pastikan AppPreferences direset ke nilai default.
+
+	f. LoginRepositoryImplTest
+		- Ketika memanggil fungsi login, pastikan pertama kali mengembalikan Resource.Loading
+		- Ketika sukses login, pastikan mengembalikan login result seperti yan diterima dari API
+		- Ketika sukses login, pastikan login result disimpan di AppPreferences
+		- Ketika gagal login, pastikan mengembalikan Error dengan pesan dari API.
+		- Ketika login dengan email kosong, pastikan mengembalikan Error dengan pesan yang sesuai.
+		- Ketika login dengan password kosong, pastikan mengembalikan Error dengan pesan yang sesuai.
+		- Ketika mendapat response kosong dari API, pastikan mengembalikan Error dengan pesan yang sesuai.
+		- Ketika mendapat IOException, pastikan mengembalikan Error dengan pesan yang sesuai.
+		- Ketika mendapat Exception lainnya, pastikan mengembalikan Error dengan pesan yang sesuai.
+
+	g. LoginViewModelTest
+		- Ketika sedang dalam proses login, pastikan isLoading = true
+		- Ketika user sudah login, pastikan isLoggedIn = true.
+		- Ketika user tidak login, pastikan isLoggedIn = false.
+		- Ketika user gagal login, pastikan errorMessage tidak null
+		- Ketika sukses login, pastikan errorMessage tidak pernah diset
+		- Ketika sukses login, pastikan isLoggedIn = true
+		- Ketika gagal login, pastikan isLoggedIn = false
+
+	h. RegisterRepositoryImplTest
+		- Ketika memanggil fungsi register, pastikan Loading dikembalikan pertama kali.
+		- Ketika sukses register, pastikan mengembalikan Success
+		- Ketika gagal register, pastikan mengembalikan Error dengan pesan dari API
+		- Ketika register dengan nama kosong, pastikan mengembalikan Error dengan pesan yang sesuai.
+		- Ketika register dengan email kosong, pastikan mengembalikan Error dengan pesan yang sesuai.
+		- Ketika register dengan password kosong, pastikan mengembalikan Error dengan pesan yang sesuai.
+		- Ketika mendapat response kosong dari API, pastikan mengembalikan Error dengan pesan yang sesuai.
+		- Ketika mendapat IOException, pastikan mengembalikan Error dengan pesan yang sesuai.
+		- Ketika mendapat Exception lainnya, pastikan mengembalikan Error dengan pesan yang sesuai.
+
+	i. RegisterViewModelTest
+		- Ketika sedang dalam proses register, pastikan isLoading = true
+		- Ketika sukses register, pastikan isRegistered = true
+		- Ketika gagal register, pastikan isRegistered = false
+		- Ketika sukses register, pastikan errorMessage tidak pernah diset
+		- Ketika user gagal register, pastikan errorMessage tidak null
+
+	j. StoriesMapViewModelTest
+		- Ketika sedang memuat storiesList, pastikan isLoading = true
+		- Ketika sukses mendapatkan storiesList, pastikan storiesList memiliki nilai yang benar
+		- Ketika sukses mendapatkan storiesList, pastikan errorMessage tidak pernah diset
+		- Ketika gagal mendapatkan storiesList, pastikan storiesList tidak pernah diset
+		- Ketika gagal mendapatkan storiesList, pastikan errorMessage tidak null
+
+
+2. Integration Testing
+	a. AddStoryActivityTest
+		- Ketika membuka AddStoryActivity, memastikan activity ditampilkan dengan benar.
+
+	b. HomeActivityTest
+		- Ketika membuka sukses mendapatkan stories di HomeActivity, memastikan menampilkan stories dengan benar.
+
+	c. LoginActivityTest
+		- Ketika membuka LoginActivity, memastikan activity ditampilkan dengan benar.
+
+	d. PreferencesActivityTest
+		- Ketika membuka PreferencesActivity, memastikan activity ditampilkan dengan benar.
+
+	e. RegisterActivityTest
+		- Ketika membuka RegisterActivity, memastikan activity ditampilkan dengan benar.
+
+	f. StoriesMapActivityTest
+		- Ketika membuka StoriesMapActivity, memastikan activity ditampilkan dengan benar.
+
+	g. StoriesDetailActivityTest
+		- Ketika membuka StoriesDetailActivity, memastikan activity ditampilkan dengan benar.
+
+3. End-to-End Testing
+	a. HomeActivityTest
+		- Membuka halaman HomeActivity, mengklik satu stories, pastikan halaman StoryDetailActivity dibuka dengan benar.

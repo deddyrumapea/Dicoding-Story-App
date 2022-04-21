@@ -1,6 +1,6 @@
 package com.romnan.dicodingstory.features.register.data.remote
 
-import com.romnan.dicodingstory.features.register.domain.model.RegisterResult
+import com.romnan.dicodingstory.features.register.domain.model.RegisterResponse
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
@@ -12,5 +12,5 @@ interface RegisterApi {
         @Field("name") name: String,
         @Field("email") email: String,
         @Field("password") password: String
-    ): RegisterResult
+    ): RegisterResponse
 }

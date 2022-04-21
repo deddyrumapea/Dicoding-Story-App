@@ -4,10 +4,10 @@ import androidx.paging.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.romnan.dicodingstory.R
-import com.romnan.dicodingstory.core.layers.data.paging.StoriesRemoteMediator
 import com.romnan.dicodingstory.core.layers.data.retrofit.CoreApi
 import com.romnan.dicodingstory.core.layers.data.retrofit.CoreApiParamValues
 import com.romnan.dicodingstory.core.layers.data.room.dao.StoryDao
+import com.romnan.dicodingstory.core.layers.data.room.entity.StoryEntity
 import com.romnan.dicodingstory.core.layers.domain.model.Story
 import com.romnan.dicodingstory.core.layers.domain.repository.CoreRepository
 import com.romnan.dicodingstory.core.layers.domain.repository.PreferencesRepository
@@ -21,27 +21,38 @@ import kotlinx.coroutines.flow.map
 import retrofit2.HttpException
 import java.io.IOException
 
-class CoreRepositoryImpl(
-    private val dao: StoryDao,
-    private val api: CoreApi,
-    private val prefRepo: PreferencesRepository,
-    private val storiesRemoteMediator: StoriesRemoteMediator
+@OptIn(ExperimentalPagingApi::class)
+class CoreRepositoryImpl constructor(
+    private val storyDao: StoryDao,
+    private val coreApi: CoreApi,
+    private val preferencesRepository: PreferencesRepository,
+    private val storiesRemoteMediator: RemoteMediator<Int, StoryEntity>
 ) : CoreRepository {
-    override fun getAllStories(): Flow<Resource<List<Story>>> = flow {
+    override fun getStories(): Flow<Resource<List<Story>>> = flow {
 
         emit(Resource.Loading(emptyList()))
 
         try {
-            val loginResult = prefRepo.getAppPreferences().first().loginResult
+            val loginResult = preferencesRepository.getAppPreferences().first().loginResult
             val bearerToken = "Bearer ${loginResult.token}"
-            val response = api.getStories(bearerToken = bearerToken)
+            val response = coreApi.getStories(bearerToken = bearerToken)
 
-            if (response.listStory?.isEmpty() == true) {
-                emit(Resource.Error(UIText.StringResource(R.string.em_stories_empty)))
-            } else {
-                emit(Resource.Success(response.listStory))
+            when (response.error) {
+                true -> emit(Resource.Error(
+                    uiText = response.message?.let { UIText.DynamicString(it) }
+                        ?: UIText.StringResource(R.string.em_unknown)
+                ))
+                false -> emit(
+                    response.listStory?.let {
+                        if (it.isNotEmpty()) Resource.Success(it) else null
+                    } ?: Resource.Error(UIText.StringResource(R.string.em_stories_empty))
+                )
+                null -> emit(
+                    response.listStory?.let {
+                        if (it.isNotEmpty()) Resource.Success(it) else null
+                    } ?: Resource.Error(UIText.StringResource(R.string.em_unknown))
+                )
             }
-
         } catch (t: Throwable) {
             val errorUiText: UIText = when (t) {
                 is HttpException -> {
@@ -67,29 +78,37 @@ class CoreRepositoryImpl(
         emit(Resource.Loading(emptyList()))
 
         try {
-            val loginResult = prefRepo.getAppPreferences().first().loginResult
+            val loginResult = preferencesRepository.getAppPreferences().first().loginResult
             val bearerToken = "Bearer ${loginResult.token}"
-            val response = api.getStories(
+            val response = coreApi.getStories(
                 bearerToken = bearerToken,
                 withLocation = CoreApiParamValues.WITH_LOCATION_TRUE
             )
 
-            if (response.listStory?.isEmpty() == true) {
-                emit(Resource.Error(UIText.StringResource(R.string.em_stories_empty)))
-            } else {
-                emit(Resource.Success(response.listStory))
+            when (response.error) {
+                true -> emit(Resource.Error(
+                    uiText = response.message?.let { UIText.DynamicString(it) }
+                        ?: UIText.StringResource(R.string.em_unknown)
+                ))
+                false -> emit(
+                    response.listStory?.let {
+                        if (it.isNotEmpty()) Resource.Success(it) else null
+                    } ?: Resource.Error(UIText.StringResource(R.string.em_stories_empty))
+                )
+                null -> emit(
+                    response.listStory?.let {
+                        if (it.isNotEmpty()) Resource.Success(it) else null
+                    } ?: Resource.Error(UIText.StringResource(R.string.em_unknown))
+                )
             }
-
         } catch (t: Throwable) {
             val errorUiText: UIText = when (t) {
                 is HttpException -> {
                     try {
-                        val responseBody = t.response()?.errorBody()
                         val response = Gson().fromJson<LoginResponse>(
-                            responseBody?.charStream(),
+                            t.response()?.errorBody()?.charStream(),
                             object : TypeToken<LoginResponse>() {}.type
                         )
-                        responseBody?.close()
                         UIText.DynamicString(response.message!!)
                     } catch (e: Exception) {
                         UIText.StringResource(R.string.em_unknown)
@@ -102,12 +121,11 @@ class CoreRepositoryImpl(
         }
     }
 
-    @OptIn(ExperimentalPagingApi::class)
     override fun getPagedStories(): Flow<PagingData<Story>> {
         return Pager(
             config = PagingConfig(pageSize = 5),
             remoteMediator = storiesRemoteMediator,
-            pagingSourceFactory = { dao.getAll() }
+            pagingSourceFactory = { storyDao.getAll() }
         ).flow.map { pagingData ->
             pagingData.map { it.toStory() }
         }

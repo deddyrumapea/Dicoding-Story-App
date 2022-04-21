@@ -19,8 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginRepo: LoginRepository,
-    private val prefRepo: PreferencesRepository
+    private val loginRepository: LoginRepository,
+    private val preferencesRepository: PreferencesRepository
 ) : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
@@ -48,7 +48,7 @@ class LoginViewModel @Inject constructor(
     private fun login(email: String, password: String) {
         loginJob?.cancel()
         loginJob = viewModelScope.launch {
-            loginRepo.login(email = email, password = password).onEach { result ->
+            loginRepository.login(email = email, password = password).onEach { result ->
                 when (result) {
                     is Resource.Error -> {
                         _isLoading.value = false
@@ -74,7 +74,7 @@ class LoginViewModel @Inject constructor(
     private fun initLoginState() {
         checkLoginStateJob?.cancel()
         checkLoginStateJob = viewModelScope.launch {
-            val loginToken = prefRepo.getAppPreferences().first().loginResult.token
+            val loginToken = preferencesRepository.getAppPreferences().first().loginResult.token
             _isLoggedIn.value = loginToken.isNotBlank()
         }
     }

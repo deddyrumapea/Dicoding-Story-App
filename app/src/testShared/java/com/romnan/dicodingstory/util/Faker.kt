@@ -5,17 +5,25 @@ import android.net.Uri
 import com.romnan.dicodingstory.core.layers.domain.model.AppPreferences
 import com.romnan.dicodingstory.core.layers.domain.model.LoginResult
 import com.romnan.dicodingstory.core.layers.domain.model.Story
+import com.romnan.dicodingstory.features.addStory.domain.model.NewStory
 import java.io.File
 import java.util.*
 
 object Faker {
+    fun getNewStory(withLocation: Boolean = false) = NewStory(
+        description = getLorem(),
+        photo = getJpegFile(),
+        lat = if (withLocation) 69.420F else null,
+        lon = if (withLocation) 42.069F else null
+    )
+
     fun getName() = "John Doe #${System.currentTimeMillis()}"
 
     fun getEmail() = "${System.currentTimeMillis()}@gmail.com"
 
     fun getPassword() = "password${System.currentTimeMillis()}"
 
-    fun getJpegFile() = File.createTempFile(System.currentTimeMillis().toString(), ".jpeg")
+    fun getJpegFile(): File = File.createTempFile(System.currentTimeMillis().toString(), ".jpeg")
 
     fun getStoriesList(count: Int = 20): List<Story> {
         val storiesList = mutableListOf<Story>()
@@ -24,9 +32,9 @@ object Faker {
                 Story(
                     id = UUID.randomUUID().toString(),
                     createdAt = System.currentTimeMillis().toString(),
-                    name = "testuser$i",
+                    name = "test_user$i",
                     photoUrl = "https://cdn.statically.io/og/Hello%20World$i.jpg",
-                    description = "Lorem ipsum dolor sit amet $i",
+                    description = "${getLorem()} $i",
                     lat = i.toDouble(),
                     lon = i.toDouble()
                 )
@@ -35,10 +43,20 @@ object Faker {
         return storiesList
     }
 
+    fun getStory(): Story = Story(
+        id = UUID.randomUUID().toString(),
+        createdAt = System.currentTimeMillis().toString(),
+        name = "test_user",
+        photoUrl = "https://cdn.statically.io/og/Hello%20World.jpg",
+        description = getLorem(),
+        lat = 69.420,
+        lon = 42.069
+    )
+
     fun getLocation(): Location =
-        Location("fakelocation").apply {
+        Location("fake_location").apply {
             latitude = 69.420
-            longitude = 42.69
+            longitude = 42.069
         }
 
     fun getFilledLoginResult(): LoginResult = LoginResult(

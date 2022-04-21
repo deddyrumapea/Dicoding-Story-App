@@ -84,7 +84,7 @@ class StoriesStackWidget : AppWidgetProvider() {
     ) {
         getAllStoriesJob?.cancel()
         getAllStoriesJob = coroutineScope.launch {
-            coreRepo.getAllStories().onEach { result ->
+            coreRepo.getStories().onEach { result ->
                 if (result is Resource.Success) {
                     val stories = result.data ?: emptyList()
                     val storiesArrayList = ArrayList(stories.map { StoryParcelable(it) })

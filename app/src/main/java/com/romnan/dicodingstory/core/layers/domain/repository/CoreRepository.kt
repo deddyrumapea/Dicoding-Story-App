@@ -6,7 +6,7 @@ import com.romnan.dicodingstory.core.util.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface CoreRepository {
-    fun getAllStories(): Flow<Resource<List<Story>>>
+    fun getStories(): Flow<Resource<List<Story>>>
     fun getPagedStories(): Flow<PagingData<Story>>
     fun getStoriesWithLocation(): Flow<Resource<List<Story>>>
 }

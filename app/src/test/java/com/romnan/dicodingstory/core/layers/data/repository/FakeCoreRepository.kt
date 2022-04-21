@@ -13,7 +13,7 @@ class FakeCoreRepository(
     private val storiesWithLatLong: Resource<List<Story>>? = null
 ) : CoreRepository {
 
-    override fun getAllStories(): Flow<Resource<List<Story>>> = flow {
+    override fun getStories(): Flow<Resource<List<Story>>> = flow {
         allStories?.let { emit(it) }
     }
 

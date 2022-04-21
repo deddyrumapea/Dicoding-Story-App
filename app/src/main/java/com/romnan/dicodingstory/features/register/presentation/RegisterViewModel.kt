@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val registerRepo: RegisterRepository
+    private val registerRepository: RegisterRepository
 ) : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -43,7 +43,7 @@ class RegisterViewModel @Inject constructor(
     private fun register(name: String, email: String, password: String) {
         registerJob?.cancel()
         registerJob = viewModelScope.launch {
-            registerRepo.register(name = name, email = email, password = password)
+            registerRepository.register(name = name, email = email, password = password)
                 .onEach { result ->
                     when (result) {
                         is Resource.Error -> {
