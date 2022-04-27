@@ -71,6 +71,8 @@ class HomeActivityTest {
             .setBody(JsonTestUtil.readStringFromFile("stories_success.json"))
         mockWebServer.enqueue(mockResponse)
 
+        onView(withId(R.id.rv_stories_list)).check(matches(isDisplayed()))
+
         onView(withId(R.id.rv_stories_list)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click())
         )
