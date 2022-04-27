@@ -103,26 +103,57 @@ Unit Testing
 
 2. Integration Testing
 	a. AddStoryActivityTest
-		- Ketika membuka AddStoryActivity, memastikan activity ditampilkan dengan benar.
+		i. Ketika membuka AddStoryActivity
+			- TextView tv_current_location tampil
+			- ImageView iv_background tampil
+			- Button btn_camera tampil
+			- Button btn_gallery tampil
+			- ImageView iv_preview_image tampil
 
 	b. HomeActivityTest
-		- Ketika membuka sukses mendapatkan stories di HomeActivity, memastikan menampilkan stories dengan benar.
+		i. Ketika berhasil menampilkan data di HomeActivity
+			- RecyclerView rv_stories_list tampil
 
 	c. LoginActivityTest
-		- Ketika membuka LoginActivity, memastikan activity ditampilkan dengan benar.
+		i. Ketika membuka LoginActivity
+			- EmailEditText eet_login tampil
+			- PasswordEditText pet_login tampil
+			- Button btn_login tampil
+			- Button btn_go_to_register tampil
 
 	d. PreferencesActivityTest
-		- Ketika membuka PreferencesActivity, memastikan activity ditampilkan dengan benar.
+		i. Ketika membuka PreferencesActivity
+			- TextView tv_title_language tampil
+			- TextView tv_description_language tampil
+			- Button btn_open_phone_language_settings tampil
 
 	e. RegisterActivityTest
-		- Ketika membuka RegisterActivity, memastikan activity ditampilkan dengan benar.
+		i. Ketika membuka RegisterActivity
+			- EditText et_register_name tampil
+			- EmailEditText eet_register tampil
+			- PasswordEditText pet_register tampil
+			- Button btn_register tampil
 
 	f. StoriesMapActivityTest
-		- Ketika membuka StoriesMapActivity, memastikan activity ditampilkan dengan benar.
+		i. Ketika membuka StoriesMapActivity, map tampil.
 
 	g. StoriesDetailActivityTest
-		- Ketika membuka StoriesDetailActivity, memastikan activity ditampilkan dengan benar.
+		i. Ketika membuka StoriesDetailActivity
+			- ImageView iv_detail_photo tampil
+			- TextView tv_detail_description tampil
+			- TextView tv_detail_description menampilkan teks yang benar
+			- TextView tv_detail_user_name tampil
+			- TextView tv_detail_user_name menampilkan teks yang benar			
 
 3. End-to-End Testing
 	a. HomeActivityTest
-		- Membuka halaman HomeActivity, mengklik satu stories, pastikan halaman StoryDetailActivity dibuka dengan benar.
+		i. Menampilkan HomeActivity
+			- Membuka halaman HomeActivity
+			- Memastikan RecyclerView rv_stories_list telah ditampilkan
+		
+		ii. Menampilkan Detail Story
+			- Mengklik satu item pada RecyclerView rv_stories_list
+			- Memastikan menuju ke halaman StoryDetailActivity
+			- Memastikan halaman StoryDetailActivity menampilkan ImageView iv_detail_photo
+			- Memastikan halaman StoryDetailActivity menampilkan TextView tv_detail_user_name
+			- Memastikan halaman StoryDetailActivity menampilkan TextView tv_detail_description
