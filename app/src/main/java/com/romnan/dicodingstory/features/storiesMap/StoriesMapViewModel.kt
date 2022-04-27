@@ -42,7 +42,6 @@ class StoriesMapViewModel @Inject constructor(
                     is Resource.Error -> {
                         _errorMessage.value = resource.uiText
                         _isLoading.value = false
-                        _storiesList.value = resource.data
                     }
                     is Resource.Loading -> {
                         _isLoading.value = true
