@@ -2,15 +2,16 @@ package com.romnan.dicodingstory.features.storiesMap
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
-import com.romnan.dicodingstory.util.Faker
-import com.romnan.dicodingstory.util.MainCoroutineRule
 import com.romnan.dicodingstory.R
-import com.romnan.dicodingstory.util.TestErrorMsg
 import com.romnan.dicodingstory.core.layers.data.repository.FakeCoreRepository
 import com.romnan.dicodingstory.core.util.Resource
 import com.romnan.dicodingstory.core.util.UIText
+import com.romnan.dicodingstory.util.Faker
+import com.romnan.dicodingstory.util.MainCoroutineRule
+import com.romnan.dicodingstory.util.TestErrorMsg
 import com.romnan.dicodingstory.util.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.junit.Assert.assertThrows
 import org.junit.Rule
 import org.junit.Test
 import java.util.concurrent.TimeoutException
@@ -54,12 +55,10 @@ class StoriesMapViewModelTest {
 
         val storiesMapViewModel = StoriesMapViewModel(fakeCoreRepository)
 
-        try {
-            assertThat(storiesMapViewModel.errorMessage.getOrAwaitValue()).isNull()
-        } catch (t: Throwable) {
-            assertThat(t).isInstanceOf(TimeoutException::class.java)
-            assertThat(t.message).isEqualTo(TestErrorMsg.LIVEDATA_VALUE_WAS_NEVER_SET)
+        val exception = assertThrows(TimeoutException::class.java) {
+            storiesMapViewModel.errorMessage.getOrAwaitValue()
         }
+        assertThat(exception.message).isEqualTo(TestErrorMsg.LIVEDATA_VALUE_WAS_NEVER_SET)
     }
 
     @Test
@@ -70,12 +69,10 @@ class StoriesMapViewModelTest {
 
         val storiesMapViewModel = StoriesMapViewModel(fakeCoreRepository)
 
-        try {
-            assertThat(storiesMapViewModel.storiesList.getOrAwaitValue()).isNull()
-        } catch (t: Throwable) {
-            assertThat(t).isInstanceOf(TimeoutException::class.java)
-            assertThat(t.message).isEqualTo(TestErrorMsg.LIVEDATA_VALUE_WAS_NEVER_SET)
+        val exception = assertThrows(TimeoutException::class.java) {
+            storiesMapViewModel.storiesList.getOrAwaitValue()
         }
+        assertThat(exception.message).isEqualTo(TestErrorMsg.LIVEDATA_VALUE_WAS_NEVER_SET)
     }
 
     @Test

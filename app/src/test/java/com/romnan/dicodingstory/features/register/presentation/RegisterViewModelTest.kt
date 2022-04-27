@@ -11,6 +11,7 @@ import com.romnan.dicodingstory.core.util.UIText
 import com.romnan.dicodingstory.features.register.data.repository.FakeRegisterRepository
 import com.romnan.dicodingstory.util.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
 import java.util.concurrent.TimeoutException
@@ -49,12 +50,10 @@ class RegisterViewModelTest {
         val registerViewModel = RegisterViewModel(fakeRegisterRepository)
 
         // assert that isRegistered value is never set before sending register request
-        try {
-            assertThat(registerViewModel.isRegistered.getOrAwaitValue()).isNull()
-        } catch (t: Throwable) {
-            assertThat(t).isInstanceOf(TimeoutException::class.java)
-            assertThat(t.message).isEqualTo(TestErrorMsg.LIVEDATA_VALUE_WAS_NEVER_SET)
+        val exception = Assert.assertThrows(TimeoutException::class.java) {
+            registerViewModel.isRegistered.getOrAwaitValue()
         }
+        assertThat(exception.message).isEqualTo(TestErrorMsg.LIVEDATA_VALUE_WAS_NEVER_SET)
 
         registerViewModel.onEvent(
             RegisterEvent.SendRegisterRequest(
@@ -75,12 +74,10 @@ class RegisterViewModelTest {
         val registerViewModel = RegisterViewModel(fakeRegisterRepository)
 
         // assert that isRegistered value is never set before sending register request
-        try {
-            assertThat(registerViewModel.isRegistered.getOrAwaitValue()).isNull()
-        } catch (t: Throwable) {
-            assertThat(t).isInstanceOf(TimeoutException::class.java)
-            assertThat(t.message).isEqualTo(TestErrorMsg.LIVEDATA_VALUE_WAS_NEVER_SET)
+        val exception = Assert.assertThrows(TimeoutException::class.java) {
+            registerViewModel.isRegistered.getOrAwaitValue()
         }
+        assertThat(exception.message).isEqualTo(TestErrorMsg.LIVEDATA_VALUE_WAS_NEVER_SET)
 
         registerViewModel.onEvent(
             RegisterEvent.SendRegisterRequest(
@@ -108,12 +105,10 @@ class RegisterViewModelTest {
             )
         )
 
-        try {
-            assertThat(registerViewModel.errorMessage.getOrAwaitValue()).isNull()
-        } catch (t: Throwable) {
-            assertThat(t).isInstanceOf(TimeoutException::class.java)
-            assertThat(t.message).isEqualTo(TestErrorMsg.LIVEDATA_VALUE_WAS_NEVER_SET)
+        val exception = Assert.assertThrows(TimeoutException::class.java) {
+            registerViewModel.errorMessage.getOrAwaitValue()
         }
+        assertThat(exception.message).isEqualTo(TestErrorMsg.LIVEDATA_VALUE_WAS_NEVER_SET)
     }
 
     @Test
@@ -124,12 +119,10 @@ class RegisterViewModelTest {
         val registerViewModel = RegisterViewModel(fakeRegisterRepository)
 
         // assert that errorMessage value is never set before sending register request
-        try {
-            assertThat(registerViewModel.errorMessage.getOrAwaitValue()).isNull()
-        } catch (t: Throwable) {
-            assertThat(t).isInstanceOf(TimeoutException::class.java)
-            assertThat(t.message).isEqualTo(TestErrorMsg.LIVEDATA_VALUE_WAS_NEVER_SET)
+        val exception = Assert.assertThrows(TimeoutException::class.java) {
+            registerViewModel.errorMessage.getOrAwaitValue()
         }
+        assertThat(exception.message).isEqualTo(TestErrorMsg.LIVEDATA_VALUE_WAS_NEVER_SET)
 
         registerViewModel.onEvent(
             RegisterEvent.SendRegisterRequest(

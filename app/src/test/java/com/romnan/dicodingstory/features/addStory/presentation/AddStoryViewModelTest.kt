@@ -3,17 +3,18 @@ package com.romnan.dicodingstory.features.addStory.presentation
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.core.net.toUri
 import com.google.common.truth.Truth.assertThat
-import com.romnan.dicodingstory.util.Faker
-import com.romnan.dicodingstory.util.MainCoroutineRule
 import com.romnan.dicodingstory.R
-import com.romnan.dicodingstory.util.TestErrorMsg
 import com.romnan.dicodingstory.core.util.Resource
 import com.romnan.dicodingstory.core.util.UIText
 import com.romnan.dicodingstory.features.addStory.data.repository.FakeAddStoryRepository
 import com.romnan.dicodingstory.features.addStory.domain.model.JpegCamState
 import com.romnan.dicodingstory.features.addStory.presentation.model.AddStoryEvent
+import com.romnan.dicodingstory.util.Faker
+import com.romnan.dicodingstory.util.MainCoroutineRule
+import com.romnan.dicodingstory.util.TestErrorMsg
 import com.romnan.dicodingstory.util.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -48,12 +49,10 @@ class AddStoryViewModelTest {
         val addStoryViewModel = AddStoryViewModel(fakeAddStoryRepository)
         addStoryViewModel.onEvent(AddStoryEvent.UploadImage(description = Faker.getLorem()))
 
-        try {
-            assertThat(addStoryViewModel.errorMessage.getOrAwaitValue()).isNull()
-        } catch (t: Throwable) {
-            assertThat(t).isInstanceOf(TimeoutException::class.java)
-            assertThat(t.message).isEqualTo(TestErrorMsg.LIVEDATA_VALUE_WAS_NEVER_SET)
+        val exception = Assert.assertThrows(TimeoutException::class.java) {
+            addStoryViewModel.errorMessage.getOrAwaitValue()
         }
+        assertThat(exception.message).isEqualTo(TestErrorMsg.LIVEDATA_VALUE_WAS_NEVER_SET)
     }
 
     @Test

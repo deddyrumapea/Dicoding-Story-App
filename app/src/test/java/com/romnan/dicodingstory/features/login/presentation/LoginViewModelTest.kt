@@ -2,16 +2,17 @@ package com.romnan.dicodingstory.features.login.presentation
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
-import com.romnan.dicodingstory.util.Faker
-import com.romnan.dicodingstory.util.MainCoroutineRule
 import com.romnan.dicodingstory.R
-import com.romnan.dicodingstory.util.TestErrorMsg
 import com.romnan.dicodingstory.core.layers.data.repository.FakePreferencesRepository
 import com.romnan.dicodingstory.core.util.Resource
 import com.romnan.dicodingstory.core.util.UIText
 import com.romnan.dicodingstory.features.login.data.repository.FakeLoginRepository
+import com.romnan.dicodingstory.util.Faker
+import com.romnan.dicodingstory.util.MainCoroutineRule
+import com.romnan.dicodingstory.util.TestErrorMsg
 import com.romnan.dicodingstory.util.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
 import java.util.concurrent.TimeoutException
@@ -77,12 +78,10 @@ class LoginViewModelTest {
         val loginViewModel = LoginViewModel(fakeLoginRepository, fakePreferencesRepository)
 
         // assert that errorMessage value is never set before sending login request
-        try {
-            assertThat(loginViewModel.errorMessage.getOrAwaitValue()).isNull()
-        } catch (t: Throwable) {
-            assertThat(t).isInstanceOf(TimeoutException::class.java)
-            assertThat(t.message).isEqualTo(TestErrorMsg.LIVEDATA_VALUE_WAS_NEVER_SET)
+        val exception = Assert.assertThrows(TimeoutException::class.java) {
+            loginViewModel.errorMessage.getOrAwaitValue()
         }
+        assertThat(exception.message).isEqualTo(TestErrorMsg.LIVEDATA_VALUE_WAS_NEVER_SET)
 
         loginViewModel.onEvent(
             LoginEvent.SendLoginRequest(
@@ -107,12 +106,10 @@ class LoginViewModelTest {
         val loginViewModel = LoginViewModel(fakeLoginRepository, fakePreferencesRepository)
 
         // assert that errorMessage value is never set before sending login request
-        try {
-            assertThat(loginViewModel.errorMessage.getOrAwaitValue()).isNull()
-        } catch (t: Throwable) {
-            assertThat(t).isInstanceOf(TimeoutException::class.java)
-            assertThat(t.message).isEqualTo(TestErrorMsg.LIVEDATA_VALUE_WAS_NEVER_SET)
+        val e1 = Assert.assertThrows(TimeoutException::class.java) {
+            loginViewModel.errorMessage.getOrAwaitValue()
         }
+        assertThat(e1.message).isEqualTo(TestErrorMsg.LIVEDATA_VALUE_WAS_NEVER_SET)
 
         loginViewModel.onEvent(
             LoginEvent.SendLoginRequest(
@@ -122,12 +119,10 @@ class LoginViewModelTest {
         )
 
         // assert that errorMessage value is never set after sending login request
-        try {
-            assertThat(loginViewModel.errorMessage.getOrAwaitValue()).isNull()
-        } catch (t: Throwable) {
-            assertThat(t).isInstanceOf(TimeoutException::class.java)
-            assertThat(t.message).isEqualTo(TestErrorMsg.LIVEDATA_VALUE_WAS_NEVER_SET)
+        val e2 = Assert.assertThrows(TimeoutException::class.java) {
+            loginViewModel.errorMessage.getOrAwaitValue()
         }
+        assertThat(e2.message).isEqualTo(TestErrorMsg.LIVEDATA_VALUE_WAS_NEVER_SET)
     }
 
     @Test
